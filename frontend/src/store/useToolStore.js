@@ -164,15 +164,18 @@ export const useToolStore = create((set, get) => ({
     },
   })),
 
-  updateToolOutput: (toolId, value) => set((state) => ({
-    tools: {
-      ...state.tools,
-      [toolId]: {
-        ...state.tools[toolId],
-        output: value,
+  updateToolOutput: (toolId, value) => set((state) => {
+    if (state.tools[toolId]?.output === value) return {};
+    return {
+      tools: {
+        ...state.tools,
+        [toolId]: {
+          ...state.tools[toolId],
+          output: value,
+        },
       },
-    },
-  })),
+    };
+  }),
 
   setToolOption: (toolId, optionKey, optionValue) => set((state) => ({
     tools: {

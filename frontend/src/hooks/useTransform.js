@@ -221,5 +221,13 @@ Average Word Length      : ${wordCountVal > 0 ? (noSpaceCharCount / wordCountVal
       isSubscribed = false;
       if (debounceTimer) clearTimeout(debounceTimer);
     };
-  }, [activeTool, toolData, updateToolOutput]);
+  }, [
+    activeTool,
+    toolData?.input,
+    toolData?.options,
+    toolData?.flags,
+    toolData?.pattern,
+    toolData?.replacePattern,
+    updateToolOutput,
+  ]);
 }
