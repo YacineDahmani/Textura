@@ -22,6 +22,11 @@ export default [
         document: 'readonly',
         window: 'readonly',
         navigator: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        console: 'readonly',
+        fetch: 'readonly',
+        Blob: 'readonly',
       },
     },
     plugins: {
@@ -35,6 +40,7 @@ export default [
       'react/react-in-jsx-scope': 'off',
       'react/jsx-uses-react': 'off',
       'react/jsx-uses-vars': 'error',
+      'no-unused-vars': ['error', { varsIgnorePattern: '^React$' }],
     },
   },
 ];

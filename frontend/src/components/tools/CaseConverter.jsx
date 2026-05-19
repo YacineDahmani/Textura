@@ -1,0 +1,80 @@
+import React from 'react';
+import { useToolStore } from '../../store/useToolStore';
+import { useTransform } from '../../hooks/useTransform';
+import { WorkspaceLayout } from '../layout/WorkspaceLayout';
+import { TextArea } from '../ui/TextArea';
+import { ActionButton } from '../ui/ActionButton';
+import { CopyButton } from '../ui/CopyButton';
+
+const caseOptions = [
+  { id: 'uppercase', label: 'UPPERCASE' },
+  { id: 'lowercase', label: 'lowercase' },
+  { id: 'title', label: 'Title Case' },
+  { id: 'sentence', label: 'Sentence' },
+  { id: 'camel', label: 'camelCase' },
+  { id: 'snake', label: 'snake_case' },
+  { id: 'kebab', label: 'kebab-case' },
+  { id: 'pascal', label: 'PascalCase' },
+];
+
+export default function CaseConverter() {
+  // Execute transformation orchestration hook
+  useTransform();
+
+  const toolData = useToolStore((state) => state.tools['case-converter']);
+  const updateToolInput = useToolStore((state) => state.updateToolInput);
+  const setToolOption = useToolStore((state) => state.setToolOption);
+  const clearToolInput = useToolStore((state) => state.clearToolInput);
+
+  const activeCase = toolData?.options?.activeCase || 'uppercase';
+
+  const actionChips = caseOptions.map((opt) => (
+    <ActionButton
+      key={opt.id}
+      active={activeCase === opt.id}
+      onClick={() => setToolOption('case-converter', 'activeCase', opt.id)}
+    >
+      {opt.label}
+    </ActionButton>
+  ));
+
+  return (
+    <WorkspaceLayout actionChips={actionChips} showSwap={true}>
+      {/* Left Input Pane */}
+      <div className="flex-1 flex flex-col h-full bg-surface">
+        <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
+          <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Input</span>
+          <button 
+            onClick={() => clearToolInput('case-converter')}
+            className="text-[10px] font-bold text-text-faint hover:text-error-red uppercase tracking-wider transition-colors cursor-pointer"
+          >
+            Clear
+          </button>
+        </div>
+        <div className="flex-1 overflow-hidden">
+          <TextArea
+            value={toolData?.input || ''}
+            onChange={(e) => updateToolInput('case-converter', e.target.value)}
+            placeholder="Paste or type your text here..."
+          />
+        </div>
+      </div>
+
+      {/* Right Output Pane */}
+      <div className="flex-1 flex flex-col h-full bg-surface">
+        <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
+          <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Output</span>
+          <CopyButton text={toolData?.output || ''} />
+        </div>
+        <div className="flex-1 overflow-hidden">
+          <TextArea
+            value={toolData?.output || ''}
+            readOnly={true}
+            isOutput={true}
+            placeholder="Result will appear here"
+          />
+        </div>
+      </div>
+    </WorkspaceLayout>
+  );
+}
