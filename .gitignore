@@ -1,0 +1,13 @@
+node_modules/
+dist/
+build/
+plan/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.venv/
+*.pyc
+*.pyo
+*.pyd
+.env
+.DS_Store
