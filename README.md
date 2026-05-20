@@ -14,24 +14,6 @@ The experience centers on:
 - Keyboard shortcuts, history, copy, swap, and tool switching.
 - Clear separation between local browser-side tools and backend-backed tools.
 
-## Core Features
-
-### Shell and Navigation
-
-- Fixed top bar with app identity, search, shortcuts, and theme control.
-- Collapsed sidebar for tool groups and active tool selection.
-- Workspace area that keeps the current tool front and center.
-- Stats strip for live input metrics.
-
-### Shared Interactions
-
-- Tool switching while preserving per-tool state.
-- Command palette for quick tool search.
-- History drawer for restoring recent inputs.
-- Copy and swap actions with visual feedback.
-- Keyboard shortcuts for power users.
-- Responsive behavior for smaller screens.
-
 ### Tool Set
 
 Textura is designed around three main families of tools.
