@@ -97,6 +97,7 @@ const initialToolsState = {
 export const useToolStore = create((set, get) => ({
   activeTool: 'case-converter',
   sidebarExpanded: false,
+  mobileSidebarOpen: false,
   shortcutsModalOpen: false,
   commandPaletteOpen: false,
   historyDrawerOpen: false,
@@ -107,6 +108,8 @@ export const useToolStore = create((set, get) => ({
 
   setSidebarExpanded: (expanded) => set({ sidebarExpanded: expanded }),
   toggleSidebarExpanded: () => set((state) => ({ sidebarExpanded: !state.sidebarExpanded })),
+  setMobileSidebarOpen: (open) => set({ mobileSidebarOpen: open }),
+  toggleMobileSidebarOpen: () => set((state) => ({ mobileSidebarOpen: !state.mobileSidebarOpen })),
 
   setShortcutsModalOpen: (open) => set({ shortcutsModalOpen: open }),
   setCommandPaletteOpen: (open) => set({ commandPaletteOpen: open }),

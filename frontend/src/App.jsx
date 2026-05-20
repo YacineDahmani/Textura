@@ -161,17 +161,17 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden bg-bg-base text-text-base select-text">
+    <div className="min-h-[100dvh] w-full flex flex-col overflow-hidden bg-bg-base text-text-base select-text">
       {/* 1. Top navigation control header */}
       <TopBar />
 
       {/* Main content split */}
-      <div className="flex-1 flex w-full h-[calc(100vh-48px)] mt-12 relative overflow-hidden">
+      <div className="flex-1 flex w-full h-[calc(100dvh-48px)] mt-12 relative overflow-hidden">
         {/* 2. Side floating sidebar */}
         <Sidebar />
 
         {/* 3. Fluid primary tool area content */}
-        <main className="ml-14 flex-1 flex flex-col relative overflow-hidden bg-bg-base">
+        <main className="ml-0 md:ml-14 flex-1 flex flex-col relative overflow-hidden bg-bg-base min-w-0">
           {renderActiveTool()}
         </main>
       </div>

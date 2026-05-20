@@ -34,7 +34,7 @@ export function HistoryDrawer() {
       onClick={() => setOpen(false)}
     >
       <div 
-        className="w-[300px] h-full bg-surface-container border-l border-outline-variant/60 flex flex-col justify-between shadow-2xl relative animate-slide-in-right"
+        className="w-full sm:w-[360px] md:w-[300px] max-w-[92vw] h-full bg-surface-container border-l border-outline-variant/60 flex flex-col justify-between shadow-2xl relative animate-slide-in-right"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
