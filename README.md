@@ -2,8 +2,6 @@
 
 Textura is a developer-first text workbench for fast text transformation, formatting, encoding, hashing, and inspection. It is designed to feel lightweight and focused: paste input, pick a tool, and get an immediate result without navigating a heavy application shell.
 
-Recent update: output can now be exported directly from the workspace, including plain text, Word documents, and direct downloads for supported formatter/minifier tools.
-
 ## What Textura Does
 
 Textura gives you a single workspace for many text utilities. It preserves state per tool, so switching between tools keeps each tool's input and output intact, whether you paste content directly or upload a supported file.
