@@ -89,6 +89,7 @@ export default function JSONFormatter() {
             onChange={(e) => updateToolInput('json-formatter', e.target.value)}
             placeholder='{"paste": "your raw JSON here"}'
             error={validationError}
+            allowedExtensions={['.json']}
           />
         </div>
       </div>

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import text, encode, hash
+from routers import text, encode, hash, parser
 
 app = FastAPI(
     title="Textura API",
@@ -21,6 +21,7 @@ app.add_middleware(
 app.include_router(text.router, prefix="/api")
 app.include_router(encode.router, prefix="/api")
 app.include_router(hash.router, prefix="/api")
+app.include_router(parser.router, prefix="/api")
 
 @app.get("/api/health")
 def health_check() -> dict[str, str]:

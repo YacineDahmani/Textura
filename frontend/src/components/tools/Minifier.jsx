@@ -141,6 +141,7 @@ export default function Minifier() {
             value={toolData?.input || ''}
             onChange={(e) => updateToolInput('minifier', e.target.value)}
             placeholder={getPlaceholder()}
+            allowedExtensions={['.' + mode]}
           />
         </div>
       </div>

@@ -59,4 +59,20 @@ export const api = {
         mode // 'test' or 'replace'
       } 
     }),
+
+  // File parser
+  parseFile: async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await fetch(`${API_BASE_URL}/parser/parse-file`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.detail || `Server returned status ${response.status}`);
+    }
+    return await response.json();
+  },
 };
+

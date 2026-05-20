@@ -1,4 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import { Upload, Loader2, AlertCircle, X } from 'lucide-react';
+import { api } from '../../lib/api';
 
 export function TextArea({
   value,
@@ -7,9 +9,17 @@ export function TextArea({
   readOnly = false,
   isOutput = false,
   error = null,
+  allowedExtensions = null, // e.g. ['.json'] or ['.js']
 }) {
   const textareaRef = useRef(null);
   const gutterRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  // File upload and processing states
+  const [isDragging, setIsDragging] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processingMessage, setProcessingMessage] = useState('');
+  const [localError, setLocalError] = useState(null);
 
   // Sync scroll between textarea and line number gutter
   const handleScroll = () => {
@@ -26,10 +36,222 @@ export function TextArea({
     handleScroll();
   }, [value]);
 
+  // Helper utility to get file extension
+  const getFileExtension = (filename) => {
+    return filename.slice(((filename.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
+  };
+
+  // Enforces a 1MB safety threshold for code files to prevent browser thread locking
+  const isCodeFile = (filename) => {
+    const ext = getFileExtension(filename);
+    return ['html', 'css', 'js', 'json', 'ts', 'tsx', 'jsx'].includes(ext);
+  };
+
+  // Check if standard web/plain text formats
+  const isTextFile = (filename) => {
+    const ext = getFileExtension(filename);
+    return [
+      'txt', 'html', 'css', 'js', 'json', 'xml', 'csv', 'md', 
+      'yaml', 'yml', 'ts', 'tsx', 'jsx'
+    ].includes(ext);
+  };
+
+  // Check if heavy binary document formats requiring backend parser
+  const isDocFile = (filename) => {
+    const ext = getFileExtension(filename);
+    return ['docx', 'pdf'].includes(ext);
+  };
+
+  // Core file validation and processing orchestration
+  const handleFile = async (file) => {
+    if (!file) return;
+    setLocalError(null);
+
+    const size = file.size;
+    const maxBytes = 5 * 1024 * 1024; // 5MB total limit
+    const maxCodeBytes = 1 * 1024 * 1024; // 1MB code safety limit
+
+    // 0. Restricted Tool Extension Check
+    if (allowedExtensions && allowedExtensions.length > 0) {
+      const ext = '.' + getFileExtension(file.name);
+      if (!allowedExtensions.includes(ext)) {
+        setLocalError({
+          message: `Invalid format. This input only accepts: ${allowedExtensions.join(', ')} files.`,
+          isWarning: false
+        });
+        return;
+      }
+    }
+
+    // 1. Validation checks
+    if (size > maxBytes) {
+      setLocalError({
+        message: `File size exceeds the 5MB limit (${(size / (1024 * 1024)).toFixed(1)}MB).`,
+        isWarning: false
+      });
+      return;
+    }
+
+    if (isCodeFile(file.name) && size > maxCodeBytes) {
+      setLocalError({
+        message: `Code files are limited to 1MB to prevent severe browser lag.`,
+        isWarning: false
+      });
+      return;
+    }
+
+    // 2. Client-side or Server-side Text Extraction
+    if (isTextFile(file.name)) {
+      setIsProcessing(true);
+      setProcessingMessage(`Reading plain text from ${file.name}...`);
+      try {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const text = e.target.result;
+          onChange({ target: { value: text } });
+          setIsProcessing(false);
+        };
+        reader.onerror = () => {
+          setLocalError({ message: "Failed to read plain text file.", isWarning: false });
+          setIsProcessing(false);
+        };
+        reader.readAsText(file);
+      } catch (err) {
+        setLocalError({ message: "Error reading text file.", isWarning: false });
+        setIsProcessing(false);
+      }
+    } else if (isDocFile(file.name)) {
+      setIsProcessing(true);
+      setProcessingMessage(`Extracting text from document ${file.name}...`);
+      try {
+        const res = await api.parseFile(file);
+        onChange({ target: { value: res.text } });
+        setIsProcessing(false);
+      } catch (err) {
+        setLocalError({
+          message: err.message || "Failed to extract text. Make sure backend parser is online.",
+          isWarning: false
+        });
+        setIsProcessing(false);
+      }
+    } else {
+      // General fallback parsing: try reading as plain text first
+      setIsProcessing(true);
+      setProcessingMessage(`Reading unknown format ${file.name} as text...`);
+      try {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const text = e.target.result;
+          onChange({ target: { value: text } });
+          setIsProcessing(false);
+        };
+        reader.onerror = () => {
+          setLocalError({
+            message: "Unsupported file type. Please upload a .txt, .pdf, .docx, or text-based file.",
+            isWarning: false
+          });
+          setIsProcessing(false);
+        };
+        reader.readAsText(file);
+      } catch (err) {
+        setLocalError({
+          message: "Unsupported file type. Please upload a .txt, .pdf, .docx, or text-based file.",
+          isWarning: false
+        });
+        setIsProcessing(false);
+      }
+    }
+  };
+
+  // Drag and Drop handlers
+  const handleDragEnter = (e) => {
+    if (readOnly) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragOver = (e) => {
+    if (readOnly) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    if (readOnly) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Reset drag indicator only when leaving the actual container bounds
+    const rect = e.currentTarget.getBoundingClientRect();
+    if (
+      e.clientX < rect.left ||
+      e.clientX >= rect.right ||
+      e.clientY < rect.top ||
+      e.clientY >= rect.bottom
+    ) {
+      setIsDragging(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    if (readOnly) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleUploadClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileSelect = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      handleFile(e.target.files[0]);
+    }
+  };
+
   return (
-    <div className={`flex-1 flex h-full relative border border-transparent overflow-hidden ${
-      isOutput ? 'bg-surface-container-low/20' : 'bg-surface-container-low/40'
-    }`}>
+    <div
+      onDragEnter={handleDragEnter}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      className={`flex-1 flex h-full relative border border-transparent overflow-hidden ${
+        isOutput ? 'bg-surface-container-low/20' : 'bg-surface-container-low/40'
+      }`}
+    >
+      {/* Hidden Native File Selector */}
+      {!readOnly && (
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileSelect}
+          className="hidden"
+          accept={allowedExtensions ? allowedExtensions.join(',') : ".txt,.html,.css,.js,.json,.pdf,.docx,.doc,text/*"}
+        />
+      )}
+
+      {/* Floating Action Upload Button (Prominent styling with Icon + Text) */}
+      {!readOnly && !isProcessing && (
+        <button
+          onClick={handleUploadClick}
+          type="button"
+          title={allowedExtensions ? `Upload ${allowedExtensions.join('/')} file` : "Upload text, docx, pdf or code files"}
+          className="absolute top-2.5 right-4 px-2.5 py-1.5 rounded bg-primary/10 border border-primary/30 hover:border-primary text-primary hover:bg-primary/20 transition-all duration-200 cursor-pointer shadow hover:shadow-md flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider group z-10"
+        >
+          <Upload size={12} className="group-hover:-translate-y-0.5 transition-transform" />
+          <span>Upload File</span>
+        </button>
+      )}
+
       {/* Line Numbers Gutter */}
       <div
         ref={gutterRef}
@@ -54,12 +276,54 @@ export function TextArea({
         placeholder={placeholder}
         readOnly={readOnly}
         spellCheck="false"
-        className={`flex-1 p-4 font-mono text-[13px] leading-6 outline-none h-full overflow-y-auto whitespace-pre overflow-x-auto ${
+        className={`flex-1 p-4 pr-32 font-mono text-[13px] leading-6 outline-none h-full overflow-y-auto whitespace-pre overflow-x-auto ${
           isOutput 
             ? 'text-primary/95 placeholder:text-text-faint' 
             : 'text-text-base placeholder:text-text-faint'
         }`}
       />
+
+      {/* Interactive Visual Drag Overlay */}
+      {isDragging && !readOnly && (
+        <div className="absolute inset-0 bg-bg-base/80 backdrop-blur-[2px] border-2 border-dashed border-primary/50 flex flex-col items-center justify-center p-6 z-20 pointer-events-none select-none">
+          <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-3">
+            <Upload size={20} className="animate-bounce" />
+          </div>
+          <span className="text-xs font-bold text-text-base mb-1">
+            {allowedExtensions ? `Drop ${allowedExtensions.join('/')} file here` : "Drop file here to upload"}
+          </span>
+          <span className="text-[10px] text-text-muted text-center max-w-[250px]">
+            {allowedExtensions 
+              ? `Only accepts ${allowedExtensions.join(', ')} file formats` 
+              : "Supports TXT, DOCX, PDF, HTML, CSS, JS (Max 5MB)"}
+          </span>
+        </div>
+      )}
+
+      {/* File Parsing Loading overlay */}
+      {isProcessing && (
+        <div className="absolute inset-0 bg-bg-base/70 backdrop-blur-[1px] flex flex-col items-center justify-center p-6 z-20 select-none">
+          <Loader2 className="w-8 h-8 text-primary animate-spin mb-3" />
+          <span className="text-xs font-mono text-text-base animate-pulse-subtle">{processingMessage}</span>
+        </div>
+      )}
+
+      {/* Inline File Validation Error Alert */}
+      {localError && (
+        <div className="absolute top-11 right-4 left-14 bg-error-red/10 border border-error-red/20 px-3 py-2 text-[11px] font-mono text-error-red rounded flex items-start gap-2 justify-between z-30 shadow-lg">
+          <div className="flex gap-2 items-start mt-0.5">
+            <AlertCircle size={13} className="shrink-0 mt-0.5 text-error-red" />
+            <span>{localError.message}</span>
+          </div>
+          <button 
+            onClick={() => setLocalError(null)}
+            type="button"
+            className="text-text-muted hover:text-error-red transition-colors p-0.5 cursor-pointer"
+          >
+            <X size={12} />
+          </button>
+        </div>
+      )}
 
       {/* Inline Validation Error Overlay */}
       {error && (
@@ -71,3 +335,5 @@ export function TextArea({
     </div>
   );
 }
+
+
