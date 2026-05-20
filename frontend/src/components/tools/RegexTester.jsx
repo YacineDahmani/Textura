@@ -5,6 +5,7 @@ import { WorkspaceLayout } from '../layout/WorkspaceLayout';
 import { TextArea } from '../ui/TextArea';
 import { ActionButton } from '../ui/ActionButton';
 import { CopyButton } from '../ui/CopyButton';
+import { ExportButton } from '../ui/ExportButton';
 
 export default function RegexTester() {
   // Execute transformation orchestration hook
@@ -132,7 +133,10 @@ export default function RegexTester() {
             <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">
               {mode === 'test' ? 'Matches Breakdown' : 'Replaced Output'}
             </span>
-            <CopyButton text={toolData?.output || ''} />
+            <div className="flex items-center gap-1.5">
+              <ExportButton text={toolData?.output || ''} toolId="regex-tester" />
+              <CopyButton text={toolData?.output || ''} />
+            </div>
           </div>
           <div className="flex-1 overflow-hidden">
             <TextArea

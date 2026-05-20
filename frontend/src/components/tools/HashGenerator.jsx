@@ -5,6 +5,7 @@ import { WorkspaceLayout } from '../layout/WorkspaceLayout';
 import { TextArea } from '../ui/TextArea';
 import { CopyButton } from '../ui/CopyButton';
 import { Badge } from '../ui/Badge';
+import { ExportButton } from '../ui/ExportButton';
 
 export default function HashGenerator() {
   // Execute transformation orchestration hook
@@ -57,7 +58,10 @@ export default function HashGenerator() {
       <div className="flex-1 flex flex-col h-full bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Digests List</span>
-          <span className="text-[9px] font-mono text-text-faint select-none">Generated Simultaneously</span>
+          <div className="flex items-center gap-2">
+            <ExportButton text={toolData?.output || ''} toolId="hash-generator" />
+            <span className="text-[9px] font-mono text-text-faint select-none">Generated Simultaneously</span>
+          </div>
         </div>
         
         <div className="flex-1 p-4 bg-surface-container-low/20 overflow-y-auto flex flex-col gap-4 select-text">

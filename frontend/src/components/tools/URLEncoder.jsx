@@ -5,6 +5,7 @@ import { WorkspaceLayout } from '../layout/WorkspaceLayout';
 import { TextArea } from '../ui/TextArea';
 import { ActionButton } from '../ui/ActionButton';
 import { CopyButton } from '../ui/CopyButton';
+import { ExportButton } from '../ui/ExportButton';
 
 export default function URLEncoder() {
   // Execute transformation orchestration hook
@@ -69,7 +70,10 @@ export default function URLEncoder() {
       <div className="flex-1 flex flex-col h-full bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Output</span>
-          <CopyButton text={toolData?.output || ''} />
+          <div className="flex items-center gap-1.5">
+            <ExportButton text={toolData?.output || ''} toolId="url-encoder" />
+            <CopyButton text={toolData?.output || ''} />
+          </div>
         </div>
         <div className="flex-1 overflow-hidden">
           <TextArea
