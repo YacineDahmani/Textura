@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useMemo, useState } from 'react';
 import { Upload, Loader2, AlertCircle, X } from 'lucide-react';
 import { api } from '../../lib/api';
 
@@ -28,12 +28,28 @@ export function TextArea({
     }
   };
 
-  // Generate line numbers based on the value
-  const lines = value === '' ? ['1'] : value.split('\n');
+  const lineCount = useMemo(() => {
+    if (!value) return 1;
+    let count = 1;
+    for (let i = 0; i < value.length; i += 1) {
+      if (value.charCodeAt(i) === 10) count += 1;
+    }
+    return count;
+  }, [value]);
+
+  const lineNumbersText = useMemo(() => {
+    const numbers = [];
+    for (let i = 1; i <= lineCount; i += 1) {
+      numbers.push(i);
+    }
+    return numbers.join('\n');
+  }, [lineCount]);
   
   // Keep scroll aligned on value change (e.g. swap or copy)
   useEffect(() => {
-    handleScroll();
+    if (textareaRef.current && gutterRef.current) {
+      gutterRef.current.scrollTop = textareaRef.current.scrollTop;
+    }
   }, [value]);
 
   // Helper utility to get file extension
@@ -224,7 +240,7 @@ export function TextArea({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`flex-1 flex h-full relative border border-transparent overflow-hidden ${
+      className={`flex-1 flex h-full min-h-0 min-w-0 relative border border-transparent overflow-hidden ${
         isOutput ? 'bg-surface-container-low/20' : 'bg-surface-container-low/40'
       }`}
     >
@@ -253,19 +269,12 @@ export function TextArea({
       )}
 
       {/* Line Numbers Gutter */}
-      <div
+      <pre
         ref={gutterRef}
-        className="w-10 select-none bg-surface-container-lowest/30 border-r border-outline-variant/10 py-4 flex flex-col items-end pr-2 overflow-hidden scrollbar-hide text-text-faint font-mono text-[11px] leading-6"
+        className="absolute left-0 top-0 bottom-0 w-10 select-none pointer-events-none bg-surface-container-lowest/30 border-r border-outline-variant/10 py-4 text-right pr-2 overflow-y-auto overflow-x-hidden scrollbar-hide text-text-faint font-mono text-[11px] leading-6 whitespace-pre m-0"
       >
-        {lines.map((_, index) => (
-          <span 
-            key={index} 
-            className={`${error && error.line === index + 1 ? 'text-error-red font-semibold animate-pulse-subtle' : ''}`}
-          >
-            {index + 1}
-          </span>
-        ))}
-      </div>
+        {lineNumbersText}
+      </pre>
 
       {/* Editor Surface */}
       <textarea
@@ -276,7 +285,7 @@ export function TextArea({
         placeholder={placeholder}
         readOnly={readOnly}
         spellCheck="false"
-        className={`flex-1 p-4 pr-32 font-mono text-[13px] leading-6 outline-none h-full overflow-y-auto whitespace-pre overflow-x-auto ${
+        className={`flex-1 min-h-0 min-w-0 py-4 pr-32 pl-12 font-mono text-[13px] leading-6 outline-none h-full overflow-y-auto whitespace-pre overflow-x-auto ${
           isOutput 
             ? 'text-primary/95 placeholder:text-text-faint' 
             : 'text-text-base placeholder:text-text-faint'

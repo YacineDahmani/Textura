@@ -238,14 +238,14 @@ export const useToolStore = create((set, get) => ({
 
   swapToolInputOutput: (toolId) => set((state) => {
     const current = state.tools[toolId];
-    if (!current.output || typeof current.output !== 'string') return {};
+    if (current.output === undefined || current.output === null) return {};
     return {
       tools: {
         ...state.tools,
         [toolId]: {
           ...current,
-          input: current.output,
-          output: current.input,
+          input: String(current.output),
+          output: String(current.input || ''),
         },
       },
     };

@@ -136,7 +136,7 @@ export function WorkspaceLayout({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full overflow-hidden select-text relative">
+    <div className="flex-1 flex flex-col h-full min-h-0 overflow-hidden select-text relative">
       {/* Mobile Glassmorphic Tab Bar */}
       {isMobile && !customLayout && (
         <div className="flex md:hidden w-full h-11 border-b border-outline-variant/30 bg-surface-container-lowest/60 backdrop-blur-md items-center justify-center shrink-0 px-4 select-none">

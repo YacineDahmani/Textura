@@ -50,7 +50,7 @@ export default function TextCleaner() {
             Clear
           </button>
         </div>
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
           <TextArea
             value={toolData?.input || ''}
             onChange={(e) => updateToolInput('text-cleaner', e.target.value)}
@@ -68,7 +68,7 @@ export default function TextCleaner() {
             <CopyButton text={toolData?.output || ''} />
           </div>
         </div>
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
           <TextArea
             value={toolData?.output || ''}
             readOnly={true}

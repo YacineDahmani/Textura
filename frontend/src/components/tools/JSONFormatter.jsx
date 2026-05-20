@@ -84,7 +84,7 @@ export default function JSONFormatter() {
             Clear
           </button>
         </div>
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
           <TextArea
             value={toolData?.input || ''}
             onChange={(e) => updateToolInput('json-formatter', e.target.value)}
@@ -104,7 +104,7 @@ export default function JSONFormatter() {
             <CopyButton text={validationError ? '' : toolData?.output || ''} />
           </div>
         </div>
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
           <TextArea
             value={validationError ? '' : toolData?.output || ''}
             readOnly={true}

@@ -171,7 +171,7 @@ export default function App() {
         <Sidebar />
 
         {/* 3. Fluid primary tool area content */}
-        <main className="ml-0 md:ml-14 flex-1 flex flex-col relative overflow-hidden bg-bg-base min-w-0">
+        <main className="ml-0 md:ml-14 flex-1 flex flex-col relative overflow-hidden bg-bg-base min-w-0 min-h-0">
           {renderActiveTool()}
         </main>
       </div>

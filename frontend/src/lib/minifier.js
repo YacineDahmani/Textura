@@ -13,7 +13,7 @@ export function minifyCSS(css, options = {}) {
   let result = css;
 
   // Strip multi-line comments
-  if (options.stripComments !== false) {
+  if (options.stripComments) {
     result = result.replace(/\/\*[\s\S]*?\*\//g, '');
   }
 
@@ -127,7 +127,7 @@ export function minifyJS(js, options = {}) {
     }
   }
   
-  if (options.collapseSpaces !== false) {
+  if (options.collapseSpaces) {
     // Normalize newlines and collapse white-space
     let processed = output
       .replace(/\r\n/g, '\n')
@@ -171,12 +171,12 @@ export function minifyHTML(html, options = {}) {
   });
   
   // Strip HTML Comments
-  if (options.stripComments !== false) {
+  if (options.stripComments) {
     result = result.replace(/<!--[\s\S]*?-->/g, '');
   }
   
   // Collapse whitespaces
-  if (options.collapseWhitespace !== false) {
+  if (options.collapseWhitespace) {
     result = result.replace(/\s+/g, ' ');
     // Remove space between block tags
     result = result.replace(/>\s+</g, '><');
@@ -187,7 +187,7 @@ export function minifyHTML(html, options = {}) {
     const item = placeholders[i];
     let content = item.content;
     
-    if (options.minifyEmbedded !== false) {
+    if (options.minifyEmbedded) {
       if (/^<style\b[^>]*>([\s\S]*?)<\/style>/i.test(content)) {
         content = content.replace(/^<style\b([^>]*)>([\s\S]*?)<\/style>/i, (m, attrs, cssContent) => {
           return `<style${attrs}>${minifyCSS(cssContent, { stripComments: true })}</style>`;
@@ -195,7 +195,8 @@ export function minifyHTML(html, options = {}) {
       } else if (/^<script\b[^>]*>([\s\S]*?)<\/script>/i.test(content)) {
         content = content.replace(/^<script\b([^>]*)>([\s\S]*?)<\/script>/i, (m, attrs, jsContent) => {
           // Only minify if it is standard Javascript (no type or type="module"/"text/javascript")
-          if (!attrs || /type=["']?(module|text\/javascript)["']?/i.test(attrs)) {
+          const trimmedAttrs = (attrs || '').trim();
+          if (!trimmedAttrs || /type=["']?(module|text\/javascript)["']?/i.test(trimmedAttrs)) {
             return `<script${attrs}>${minifyJS(jsContent, { stripComments: true, collapseSpaces: true })}</script>`;
           }
           return m;
@@ -203,7 +204,7 @@ export function minifyHTML(html, options = {}) {
       }
     }
     
-    result = result.replace(item.placeholder, content);
+    result = result.replace(item.placeholder, () => content);
   }
   
   return result.trim();

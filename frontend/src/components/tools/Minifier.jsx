@@ -125,7 +125,7 @@ export default function Minifier() {
   return (
     <WorkspaceLayout actionChips={actionChips} showSwap={true}>
       {/* Left Input Pane */}
-      <div className="flex-1 flex flex-col h-full bg-surface">
+      <div className="flex-1 flex flex-col h-full min-h-0 bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">
             Input ({mode.toUpperCase()})
@@ -137,7 +137,7 @@ export default function Minifier() {
             Clear
           </button>
         </div>
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
           <TextArea
             value={toolData?.input || ''}
             onChange={(e) => updateToolInput('minifier', e.target.value)}
@@ -148,7 +148,7 @@ export default function Minifier() {
       </div>
 
       {/* Right Output Pane */}
-      <div className="flex-1 flex flex-col h-full bg-surface">
+      <div className="flex-1 flex flex-col h-full min-h-0 bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">
             Minified Output
@@ -158,7 +158,7 @@ export default function Minifier() {
             <CopyButton text={toolData?.output || ''} />
           </div>
         </div>
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
           <TextArea
             value={toolData?.output || ''}
             readOnly={true}

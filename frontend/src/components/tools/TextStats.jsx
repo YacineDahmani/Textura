@@ -27,7 +27,7 @@ export default function TextStats() {
             Clear
           </button>
         </div>
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
           <TextArea
             value={toolData?.input || ''}
             onChange={(e) => updateToolInput('text-stats', e.target.value)}
@@ -45,7 +45,7 @@ export default function TextStats() {
             <CopyButton text={toolData?.output || ''} />
           </div>
         </div>
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
           <TextArea
             value={toolData?.output || ''}
             readOnly={true}

@@ -94,7 +94,7 @@ export default function DiffViewer() {
               Clear Both
             </button>
           </div>
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
             <TextArea
               value={textA}
               onChange={(e) => updateToolInput('diff-viewer', e.target.value)}
@@ -110,7 +110,7 @@ export default function DiffViewer() {
           <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 bg-surface-container-lowest/30 select-none">
             <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Modified Text (B)</span>
           </div>
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
             <TextArea
               value={textB}
               onChange={(e) => updateToolInputB('diff-viewer', e.target.value)}

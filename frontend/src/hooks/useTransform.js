@@ -235,7 +235,13 @@ Average Word Length      : ${wordCountVal > 0 ? (noSpaceCharCount / wordCountVal
 
     const localTools = ['case-converter', 'text-cleaner', 'text-stats', 'json-formatter', 'url-encoder', 'minifier'];
     if (localTools.includes(activeTool)) {
-      performLocalTransform();
+      if (input.length > 2000) {
+        debounceTimer = setTimeout(() => {
+          performLocalTransform();
+        }, 150);
+      } else {
+        performLocalTransform();
+      }
     } else {
       performRemoteTransform();
     }

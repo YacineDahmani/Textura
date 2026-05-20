@@ -64,7 +64,7 @@ export default function RegexTester() {
   ];
 
   return (
-    <div className="flex-1 flex flex-col h-full overflow-hidden select-text">
+    <div className="flex-1 flex flex-col h-full min-h-0 overflow-hidden select-text">
       {/* Pattern Input Header Bar */}
       <div className="bg-surface-container-low border-b border-outline-variant/60 p-4 flex flex-col gap-3 shrink-0">
         <div className="flex items-center gap-3">
@@ -118,7 +118,7 @@ export default function RegexTester() {
               Clear
             </button>
           </div>
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
             <TextArea
               value={toolData?.input || ''}
               onChange={(e) => updateToolInput('regex-tester', e.target.value)}
@@ -138,7 +138,7 @@ export default function RegexTester() {
               <CopyButton text={toolData?.output || ''} />
             </div>
           </div>
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
             <TextArea
               value={toolData?.output || ''}
               readOnly={true}
