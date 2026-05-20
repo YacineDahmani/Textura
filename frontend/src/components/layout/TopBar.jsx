@@ -45,9 +45,6 @@ export function TopBar() {
             <Search size={14} className="text-text-faint group-hover:text-primary transition-colors" />
             <span>Search tools...</span>
           </div>
-          <span className="text-text-faint font-mono text-[10px] border border-outline-variant/60 px-1.5 py-0.5 rounded uppercase select-none">
-            Ctrl+K
-          </span>
         </button>
       </div>
 
