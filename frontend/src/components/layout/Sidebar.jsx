@@ -3,7 +3,8 @@ import { useToolStore } from '../../store/useToolStore';
 import { 
   Type, Eraser, BarChart2, 
   Braces, GitCompare, Code, 
-  KeyRound, Link, Fingerprint 
+  KeyRound, Link, Fingerprint,
+  Minimize2
 } from 'lucide-react';
 
 const toolGroups = [
@@ -21,6 +22,7 @@ const toolGroups = [
       { id: 'json-formatter', name: 'JSON Formatter', icon: Braces },
       { id: 'diff-viewer', name: 'Diff Viewer', icon: GitCompare },
       { id: 'regex-tester', name: 'Regex Tester', icon: Code },
+      { id: 'minifier', name: 'Code Minifier', icon: Minimize2 },
     ],
   },
   {

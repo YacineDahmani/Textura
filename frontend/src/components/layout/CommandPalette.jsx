@@ -12,6 +12,7 @@ const tools = [
   { id: 'base64', name: 'Base64 Tool', desc: 'Encode and decode Base64 strings safely', group: 'Encode' },
   { id: 'url-encoder', name: 'URL Encoder', desc: 'Encode and decode percent URLs', group: 'Encode' },
   { id: 'hash-generator', name: 'Hash Generator', desc: 'Generate SHA256, MD5, SHA512 digests', group: 'Encode' },
+  { id: 'minifier', name: 'Code Minifier', desc: 'Minify HTML, CSS, and Javascript code blocks', group: 'Format' },
 ];
 
 export function CommandPalette() {

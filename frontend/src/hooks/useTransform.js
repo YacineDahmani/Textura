@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useToolStore } from '../store/useToolStore';
 import { api } from '../lib/api';
+import { minifyHTML, minifyCSS, minifyJS } from '../lib/minifier';
 
 // Utility for Case Conversions
 function toTitleCase(str) {
@@ -153,6 +154,28 @@ Average Word Length      : ${wordCountVal > 0 ? (noSpaceCharCount / wordCountVal
             break;
           }
 
+          case 'minifier': {
+            const mode = options.mode || 'html';
+            if (mode === 'html') {
+              result = minifyHTML(input, {
+                stripComments: options.stripComments,
+                collapseWhitespace: options.collapseWhitespace,
+                minifyEmbedded: options.minifyEmbedded,
+              });
+            } else if (mode === 'css') {
+              result = minifyCSS(input, {
+                stripComments: options.stripComments,
+                removeLastSemicolon: options.removeLastSemicolon,
+              });
+            } else if (mode === 'js') {
+              result = minifyJS(input, {
+                stripComments: options.stripComments,
+                collapseSpaces: options.collapseSpaces,
+              });
+            }
+            break;
+          }
+
           default:
             return;
         }
@@ -210,7 +233,7 @@ Average Word Length      : ${wordCountVal > 0 ? (noSpaceCharCount / wordCountVal
       }, 300); // 300ms debounce to prevent API thrashing
     };
 
-    const localTools = ['case-converter', 'text-cleaner', 'text-stats', 'json-formatter', 'url-encoder'];
+    const localTools = ['case-converter', 'text-cleaner', 'text-stats', 'json-formatter', 'url-encoder', 'minifier'];
     if (localTools.includes(activeTool)) {
       performLocalTransform();
     } else {

@@ -19,6 +19,7 @@ import RegexTester from './components/tools/RegexTester';
 import Base64Tool from './components/tools/Base64Tool';
 import URLEncoder from './components/tools/URLEncoder';
 import HashGenerator from './components/tools/HashGenerator';
+import Minifier from './components/tools/Minifier';
 
 const toolIndexMap = [
   'case-converter',
@@ -30,6 +31,7 @@ const toolIndexMap = [
   'base64',
   'url-encoder',
   'hash-generator',
+  'minifier',
 ];
 
 export default function App() {
@@ -151,6 +153,8 @@ export default function App() {
         return <URLEncoder />;
       case 'hash-generator':
         return <HashGenerator />;
+      case 'minifier':
+        return <Minifier />;
       default:
         return <CaseConverter />;
     }

@@ -79,6 +79,19 @@ const initialToolsState = {
     options: {},
     history: [],
   },
+  'minifier': {
+    input: '',
+    output: '',
+    options: {
+      mode: 'html', // 'html', 'css', 'js'
+      stripComments: true,
+      collapseWhitespace: true,
+      minifyEmbedded: true,
+      removeLastSemicolon: false,
+      collapseSpaces: true,
+    },
+    history: [],
+  },
 };
 
 export const useToolStore = create((set, get) => ({
