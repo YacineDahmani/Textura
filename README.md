@@ -4,7 +4,7 @@ Textura is a developer-first text workbench for fast text transformation, format
 
 ## What Textura Does
 
-Textura gives you a single workspace for many text utilities. It preserves state per tool, so switching between tools keeps each tool's input and output intact.
+Textura gives you a single workspace for many text utilities. It preserves state per tool, so switching between tools keeps each tool's input and output intact, whether you paste content directly or upload a supported file.
 
 The experience centers on:
 
@@ -12,6 +12,7 @@ The experience centers on:
 - A split-pane workspace for input and output.
 - A compact technical UI with minimal chrome.
 - Keyboard shortcuts, history, copy, swap, and tool switching.
+- File upload support for supported text, document, and code formats.
 - Clear separation between local browser-side tools and backend-backed tools.
 
 ### Tool Set
@@ -27,6 +28,7 @@ Textura is designed around three main families of tools.
 #### Format Tools
 
 - JSON Formatter: pretty-print, minify, and optional key sorting.
+- Code Minifier: minify HTML, CSS, and JavaScript with mode-specific options.
 - Diff Viewer: compare two text inputs and inspect the differences.
 - Regex Tester: test patterns, flags, replacements, matches, and results.
 
