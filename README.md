@@ -2,6 +2,8 @@
 
 Textura is a developer-first text workbench for fast text transformation, formatting, encoding, hashing, and inspection. It is designed to feel lightweight and focused: paste input, pick a tool, and get an immediate result without navigating a heavy application shell.
 
+Recent update: output can now be exported directly from the workspace, including plain text, Word documents, and direct downloads for supported formatter/minifier tools.
+
 ## What Textura Does
 
 Textura gives you a single workspace for many text utilities. It preserves state per tool, so switching between tools keeps each tool's input and output intact, whether you paste content directly or upload a supported file.
@@ -13,6 +15,7 @@ The experience centers on:
 - A compact technical UI with minimal chrome.
 - Keyboard shortcuts, history, copy, swap, and tool switching.
 - File upload support for supported text, document, and code formats.
+- Export buttons for saving generated output as files.
 - Clear separation between local browser-side tools and backend-backed tools.
 
 ### Tool Set
@@ -37,6 +40,12 @@ Textura is designed around three main families of tools.
 - Base64 Tool: encode and decode text, including URL-safe support.
 - URL Encoder: encode and decode URI text.
 - Hash Generator: generate multiple hashes from the same input.
+
+#### Export Support
+
+- Most text-oriented tools can export the current output as `.txt`, `.doc`, or `.docx`.
+- JSON Formatter exports formatted JSON directly as a `.json` file.
+- Minifier exports raw minified `.html`, `.css`, or `.js` files depending on the selected mode.
 
 ## Tech Stack
 
