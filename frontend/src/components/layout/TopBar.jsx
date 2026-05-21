@@ -50,10 +50,15 @@ export function TopBar() {
       <div className="flex items-center flex-1 justify-center min-w-0 px-1 sm:px-0">
         <button
           onClick={() => setCommandPaletteOpen(true)}
-          className="relative bg-surface-container-low border border-outline-variant/40 hover:border-primary/50 text-text-muted hover:text-text-base p-2 sm:px-4 sm:py-1.5 rounded-full flex items-center justify-center sm:justify-between transition-all duration-150 outline-none cursor-pointer group w-9 h-9 sm:w-auto sm:max-w-[24rem] md:w-80"
+          className="relative bg-surface-container-low border border-outline-variant/40 hover:border-primary/50 text-text-muted hover:text-text-base p-2 sm:px-4 sm:py-1.5 rounded-full flex items-center justify-center transition-all duration-150 outline-none cursor-pointer group w-9 h-9 sm:w-auto sm:max-w-[24rem] md:w-80"
         >
-          <Search size={14} className="text-text-faint group-hover:text-primary transition-colors shrink-0" />
-          <span className="hidden sm:inline truncate ml-2 text-[12px]">Search tools...</span>
+          <Search
+            size={13}
+            className="text-text-faint group-hover:text-primary transition-colors shrink-0 sm:absolute sm:left-3 sm:top-1/2 sm:-translate-y-1/2"
+          />
+          <span className="hidden sm:block w-full text-center truncate text-[11px] leading-none">
+            Search tools...
+          </span>
         </button>
       </div>
 
