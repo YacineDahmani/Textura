@@ -101,7 +101,7 @@ export const useToolStore = create((set, get) => ({
   shortcutsModalOpen: false,
   commandPaletteOpen: false,
   historyDrawerOpen: false,
-  theme: 'dark',
+  theme: localStorage.getItem('textura-theme') || 'dark',
   tools: initialToolsState,
 
   setActiveTool: (toolId) => set({ activeTool: toolId }),
@@ -118,12 +118,14 @@ export const useToolStore = create((set, get) => ({
   setTheme: (theme) => {
     document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(theme);
+    localStorage.setItem('textura-theme', theme);
     set({ theme });
   },
   toggleTheme: () => {
     const nextTheme = get().theme === 'dark' ? 'light' : 'dark';
     document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(nextTheme);
+    localStorage.setItem('textura-theme', nextTheme);
     set({ theme: nextTheme });
   },
 

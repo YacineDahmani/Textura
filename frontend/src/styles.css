@@ -32,6 +32,36 @@
   --animate-pulse-subtle: pulse-subtle 2s infinite ease-in-out;
 }
 
+.light {
+  --color-bg-base: #faf8f5;
+  --color-surface-container: #eeebe6;
+  --color-surface-container-low: #f4f2ee;
+  --color-surface-container-high: #e5e2db;
+  --color-surface-container-highest: #dad5cb;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-bright: #cfcabc;
+  --color-surface-variant: #e4dfd4;
+  
+  --color-primary: #127282;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #d2ecf0;
+  --color-on-primary-container: #06414a;
+  
+  --color-text-base: #1f1d1a;
+  --color-text-muted: #6b6964;
+  --color-text-faint: #9c9993;
+  
+  --color-outline-variant: #d5d1c7;
+  --color-border-low: rgba(0, 0, 0, 0.05);
+  --color-border-med: rgba(0, 0, 0, 0.10);
+  
+  --color-success-green: #16a34a;
+  --color-error-red: #dc2626;
+  
+  --color-backdrop: rgba(238, 235, 230, 0.8);
+}
+
+
 @keyframes pulse-subtle {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
@@ -84,7 +114,7 @@ textarea {
 
 /* Glass and Tonal overlays */
 .modal-backdrop {
-  background-color: rgba(15, 14, 12, 0.75);
+  background-color: var(--color-backdrop, rgba(15, 14, 12, 0.75));
   backdrop-filter: blur(4px);
 }
 

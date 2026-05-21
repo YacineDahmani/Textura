@@ -132,7 +132,7 @@ export function TextArea({
           setIsProcessing(false);
         };
         reader.readAsText(file);
-      } catch (err) {
+      } catch {
         setLocalError({ message: "Error reading text file.", isWarning: false });
         setIsProcessing(false);
       }
@@ -169,7 +169,7 @@ export function TextArea({
           setIsProcessing(false);
         };
         reader.readAsText(file);
-      } catch (err) {
+      } catch {
         setLocalError({
           message: "Unsupported file type. Please upload a .txt, .pdf, .docx, or text-based file.",
           isWarning: false

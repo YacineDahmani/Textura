@@ -27,6 +27,10 @@ export default [
         console: 'readonly',
         fetch: 'readonly',
         Blob: 'readonly',
+        localStorage: 'readonly',
+        URL: 'readonly',
+        FileReader: 'readonly',
+        FormData: 'readonly',
       },
     },
     plugins: {

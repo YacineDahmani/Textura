@@ -35,6 +35,7 @@ const toolIndexMap = [
 ];
 
 export default function App() {
+  const theme = useToolStore((state) => state.theme);
   const activeTool = useToolStore((state) => state.activeTool);
   const setActiveTool = useToolStore((state) => state.setActiveTool);
   const toolData = useToolStore((state) => state.tools[activeTool]);
@@ -48,6 +49,12 @@ export default function App() {
 
   // Initialize history recorder
   const { recordHistory } = useHistory();
+
+  // Sync theme with document.documentElement
+  useEffect(() => {
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(theme);
+  }, [theme]);
 
   // Record history on valid changes
   useEffect(() => {
