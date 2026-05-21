@@ -87,10 +87,6 @@ export function TopBar() {
         </button>
         
         <div className="h-4 w-[1px] bg-outline-variant/50 mx-1 hidden sm:block" />
-        
-        <span className="hidden sm:inline text-[10px] font-mono text-text-faint select-none">
-          v1.0.0
-        </span>
       </div>
     </header>
   );
