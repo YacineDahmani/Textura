@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useToolStore } from '../store/useToolStore';
 import { api } from '../lib/api';
 import { minifyHTML, minifyCSS, minifyJS } from '../lib/minifier';
+import { convertToTraditional, convertToSimplified } from '../lib/chineseConverter';
 
 // Utility for Case Conversions
 function toTitleCase(str) {
@@ -101,6 +102,11 @@ export function useTransform() {
             if (options.deduplicateLines) temp = Array.from(new Set(temp.split('\n'))).join('\n');
             if (options.stripHtml) temp = temp.replace(/<[^>]*>/g, '');
             if (options.normalizeUnicode) temp = temp.normalize('NFC');
+            if (options.removeArabicDiacritics) temp = temp.replace(/[\u064B-\u0652\u0670]/g, '');
+            if (options.removeArabicTatweel) temp = temp.replace(/\u0640/g, '');
+            if (options.removeAccents) temp = temp.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (options.simplifiedToTraditional) temp = convertToTraditional(temp);
+            if (options.traditionalToSimplified) temp = convertToSimplified(temp);
             result = temp;
             break;
           }
@@ -109,17 +115,66 @@ export function useTransform() {
             // Stats are shown in the footer and main pane. We can compile details as output.
             const charCountVal = input.length;
             const noSpaceCharCount = input.replace(/\s/g, '').length;
-            const words = input.trim() === '' ? [] : input.trim().split(/\s+/);
-            const wordCountVal = words.length;
+
+            // Treat CJK characters as individual words for accurate statistics
+            const cjkRegex = /[\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFF\u3040-\u309F\u30A0-\u30FF\uAC00-\uD7AF]/g;
+            const cjkCharCount = (input.match(cjkRegex) || []).length;
+            const nonCjkText = input.replace(cjkRegex, ' ');
+            const words = nonCjkText.trim() === '' ? [] : nonCjkText.trim().split(/\s+/);
+            const wordCountVal = words.length + cjkCharCount;
+
             const linesVal = input === '' ? 0 : input.split('\n').length;
             const paragraphs = input.split(/\n\s*\n/).filter(p => p.trim() !== '').length;
-            const sentences = input.split(/[.!?]+/).filter(s => s.trim() !== '').length;
+
+            // Sentence parsing supporting Western, CJK and Arabic sentence markers
+            const sentenceMatches = input.match(/[^.!?。！？؟\s][^.!?。！？؟]*[.!?。！？؟]+/g) || [];
+            let sentences = sentenceMatches.length;
+            if (sentences === 0 && input.trim() !== '') {
+              sentences = 1;
+            }
+
             const readTime = Math.ceil(wordCountVal / 200);
 
+            // Dominant Language Script detection
+            const counts = {
+              Latin: (input.match(/[a-zA-Z]/g) || []).length,
+              Arabic: (input.match(/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/g) || []).length,
+              Chinese: (input.match(/[\u4E00-\u9FFF]/g) || []).length,
+              Japanese: (input.match(/[\u3040-\u309F\u30A0-\u30FF]/g) || []).length,
+              Korean: (input.match(/[\uAC00-\uD7AF]/g) || []).length,
+              Cyrillic: (input.match(/[\u0400-\u04FF]/g) || []).length,
+            };
+
+            let dominantScript = "Latin / Western";
+            let maxCount = 0;
+            for (const [script, count] of Object.entries(counts)) {
+              if (count > maxCount) {
+                maxCount = count;
+                dominantScript = script;
+              }
+            }
+
+            if (dominantScript === "Chinese") {
+              dominantScript = "Chinese (Han / Mandarin)";
+            } else if (dominantScript === "Japanese") {
+              dominantScript = "Japanese (Kana / Kanji)";
+            } else if (dominantScript === "Korean") {
+              dominantScript = "Korean (Hangul)";
+            } else if (dominantScript === "Arabic") {
+              dominantScript = "Arabic / Persian (RTL)";
+            } else if (dominantScript === "Cyrillic") {
+              dominantScript = "Cyrillic (Russian / Slavic)";
+            } else if (dominantScript === "Latin" && maxCount > 0) {
+              dominantScript = "Latin (English / Spanish / French...)";
+            } else if (maxCount === 0) {
+              dominantScript = "Mixed / Other";
+            }
+
             result = `--- Comprehensive Text Diagnostics ---
+Detected Primary Script  : ${dominantScript}
 Characters (with spaces) : ${charCountVal}
 Characters (no spaces)   : ${noSpaceCharCount}
-Words                    : ${wordCountVal}
+Words (script-aware)     : ${wordCountVal}
 Lines                    : ${linesVal}
 Paragraphs               : ${paragraphs}
 Sentences                : ${sentences}
