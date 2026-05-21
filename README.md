@@ -11,6 +11,7 @@ The experience centers on:
 - Fast transformations with immediate feedback.
 - A split-pane workspace for input and output.
 - A compact technical UI with minimal chrome.
+- A theme switcher for quick visual preference changes.
 - Keyboard shortcuts, history, copy, swap, and tool switching.
 - File upload support for supported text, document, and code formats.
 - Export buttons for saving generated output as files.
@@ -23,8 +24,8 @@ Textura is designed around three main families of tools.
 #### Text Tools
 
 - Case Converter: uppercase, lowercase, title case, sentence case, camelCase, snake_case, kebab-case, and PascalCase.
-- Text Cleaner: trim text, remove blank lines, deduplicate lines, collapse spaces, strip HTML, and normalize Unicode.
-- Text Stats: live counts for characters, words, lines, paragraphs, sentences, reading time, and related diagnostics.
+- Text Cleaner: trim text, remove blank lines, deduplicate lines, collapse spaces, strip HTML, normalize Unicode, and handle multilingual text more predictably.
+- Text Stats: live counts for characters, words, lines, paragraphs, sentences, reading time, and related diagnostics across different writing systems.
 
 #### Format Tools
 
