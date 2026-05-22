@@ -73,50 +73,53 @@ export function Sidebar() {
             <span className="block h-0.5 w-3.5 -translate-y-[1px] -rotate-45 rounded bg-current" />
           </button>
         </div>
-        <div className="flex h-full w-full flex-col gap-6 overflow-y-auto scrollbar-hide">
+        <div className="flex h-full w-full flex-col gap-4 overflow-y-auto scrollbar-hide">
           {toolGroups.map((group, groupIdx) => (
-            <div key={groupIdx} className="flex w-full flex-col gap-1 px-2">
-              {/* Group Label */}
-              {showLabels ? (
-                <span className="px-3 py-1.5 text-[9px] font-bold tracking-widest text-text-faint uppercase font-mono">
-                  {group.title}
-                </span>
-              ) : (
-                <div className="h-4 border-b border-outline-variant/35 mx-2 my-1" />
+            <React.Fragment key={groupIdx}>
+              {groupIdx > 0 && (
+                <div className="mx-3 my-1 border-t border-outline-variant/30" />
               )}
+              <div className="flex w-full flex-col gap-1 px-2">
+                {/* Group Label */}
+                {showLabels && (
+                  <span className="px-3 py-1 text-[9px] font-bold tracking-widest text-text-faint uppercase font-mono">
+                    {group.title}
+                  </span>
+                )}
 
-              {/* Group Tools */}
-              {group.tools.map((tool) => {
-                const Icon = tool.icon;
-                const isActive = activeTool === tool.id;
+                {/* Group Tools */}
+                {group.tools.map((tool) => {
+                  const Icon = tool.icon;
+                  const isActive = activeTool === tool.id;
 
-                return (
-                  <button
-                    key={tool.id}
-                    onClick={() => {
-                      setActiveTool(tool.id);
-                      setMobileSidebarOpen(false);
-                    }}
-                    title={!showLabels ? tool.name : undefined}
-                    className={`relative flex h-9 w-full items-center gap-3 rounded px-3 transition-colors outline-none cursor-pointer ${
-                      isActive
-                        ? 'border-l-2 border-primary bg-primary/5 text-primary'
-                        : 'text-text-muted hover:bg-surface-container-high hover:text-text-base'
-                    }`}
-                  >
-                    <Icon
-                      size={16}
-                      className={`shrink-0 transition-colors ${isActive ? 'text-primary' : 'text-text-muted'}`}
-                    />
-                    {showLabels && (
-                      <span className="text-[12px] font-medium leading-none whitespace-nowrap animate-fade-in">
-                        {tool.name}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
+                  return (
+                    <button
+                      key={tool.id}
+                      onClick={() => {
+                        setActiveTool(tool.id);
+                        setMobileSidebarOpen(false);
+                      }}
+                      title={!showLabels ? tool.name : undefined}
+                      className={`relative flex h-9 w-full items-center gap-3 rounded px-3 transition-colors outline-none cursor-pointer ${
+                        isActive
+                          ? 'border-l-2 border-primary bg-primary/5 text-primary'
+                          : 'text-text-muted hover:bg-surface-container-high hover:text-text-base'
+                      }`}
+                    >
+                      <Icon
+                        size={16}
+                        className={`shrink-0 transition-colors ${isActive ? 'text-primary' : 'text-text-muted'}`}
+                      />
+                      {showLabels && (
+                        <span className="text-[12px] font-medium leading-none whitespace-nowrap animate-fade-in">
+                          {tool.name}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </React.Fragment>
           ))}
         </div>
       </aside>
