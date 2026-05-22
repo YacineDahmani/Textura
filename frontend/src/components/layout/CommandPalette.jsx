@@ -13,6 +13,9 @@ const tools = [
   { id: 'url-encoder', name: 'URL Encoder', desc: 'Encode and decode percent URLs', group: 'Encode' },
   { id: 'hash-generator', name: 'Hash Generator', desc: 'Generate SHA256, MD5, SHA512 digests', group: 'Encode' },
   { id: 'minifier', name: 'Code Minifier', desc: 'Minify HTML, CSS, and Javascript code blocks', group: 'Format' },
+  { id: 'markdown-tool', name: 'Markdown Preview', desc: 'Format and render markdown to dynamic HTML preview', group: 'Format' },
+  { id: 'xml-yaml-formatter', name: 'XML/YAML Format', desc: 'Beautify, minify, and format XML and YAML code blocks', group: 'Format' },
+  { id: 'password-generator', name: 'Password Gen', desc: 'Generate secure passwords and check visual entropy strength', group: 'Encode' },
 ];
 
 export function CommandPalette() {

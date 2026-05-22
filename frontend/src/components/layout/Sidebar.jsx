@@ -4,7 +4,7 @@ import {
   Type, Eraser, BarChart2, 
   Braces, GitCompare, Code, 
   KeyRound, Link, Fingerprint,
-  Minimize2
+  Minimize2, FileText, Database, Lock
 } from 'lucide-react';
 
 const toolGroups = [
@@ -23,6 +23,8 @@ const toolGroups = [
       { id: 'diff-viewer', name: 'Diff Viewer', icon: GitCompare },
       { id: 'regex-tester', name: 'Regex Tester', icon: Code },
       { id: 'minifier', name: 'Code Minifier', icon: Minimize2 },
+      { id: 'markdown-tool', name: 'Markdown Preview', icon: FileText },
+      { id: 'xml-yaml-formatter', name: 'XML/YAML Format', icon: Database },
     ],
   },
   {
@@ -31,6 +33,7 @@ const toolGroups = [
       { id: 'base64', name: 'Base64 Tool', icon: KeyRound },
       { id: 'url-encoder', name: 'URL Encoder', icon: Link },
       { id: 'hash-generator', name: 'Hash Generator', icon: Fingerprint },
+      { id: 'password-generator', name: 'Password Gen', icon: Lock },
     ],
   },
 ];

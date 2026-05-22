@@ -20,6 +20,9 @@ import Base64Tool from './components/tools/Base64Tool';
 import URLEncoder from './components/tools/URLEncoder';
 import HashGenerator from './components/tools/HashGenerator';
 import Minifier from './components/tools/Minifier';
+import MarkdownTool from './components/tools/MarkdownTool';
+import XmlYamlFormatter from './components/tools/XmlYamlFormatter';
+import PasswordGenerator from './components/tools/PasswordGenerator';
 
 const toolIndexMap = [
   'case-converter',
@@ -32,6 +35,9 @@ const toolIndexMap = [
   'url-encoder',
   'hash-generator',
   'minifier',
+  'markdown-tool',
+  'xml-yaml-formatter',
+  'password-generator',
 ];
 
 export default function App() {
@@ -162,6 +168,12 @@ export default function App() {
         return <HashGenerator />;
       case 'minifier':
         return <Minifier />;
+      case 'markdown-tool':
+        return <MarkdownTool />;
+      case 'xml-yaml-formatter':
+        return <XmlYamlFormatter />;
+      case 'password-generator':
+        return <PasswordGenerator />;
       default:
         return <CaseConverter />;
     }

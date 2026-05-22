@@ -97,6 +97,40 @@ const initialToolsState = {
     },
     history: [],
   },
+  'markdown-tool': {
+    input: '# Welcome to Textura Markdown\n\nTextura is a **premium** text workbench. Here is a quick demonstration of Markdown rendering:\n\n### Core Features\n1. Dynamic live HTML preview\n2. Clean, syntax-aware code blocks\n3. Consistent typographic visual styling\n\nHere is a simple table:\n\n| Tool Family | Purpose | Status |\n| :--- | :--- | :--- |\n| **Text** | Case, Cleaning | Live |\n| **Format** | XML, JSON, YAML | Live |\n| **Encode** | Base64, Hashes | Live |\n\nEnjoy using the **best** text workbench!\n\n```javascript\nconst hello = "Welcome to Textura!";\nconsole.log(hello);\n```',
+    output: '',
+    options: {
+      mode: 'preview', // 'preview' | 'html'
+      cleanHeaders: true,
+      normalizeSpacing: true,
+    },
+    history: [],
+  },
+  'xml-yaml-formatter': {
+    input: '<note>\n  <to>Tove</to>\n  <from>Jani</from>\n  <heading>Reminder</heading>\n  <body>Don\'t forget me this weekend!</body>\n</note>',
+    output: '',
+    options: {
+      mode: 'xml', // 'xml' | 'yaml'
+      formatType: 'pretty-2', // 'pretty-2' | 'pretty-4' | 'minify'
+    },
+    history: [],
+  },
+  'password-generator': {
+    input: '',
+    output: '',
+    options: {
+      length: 16,
+      uppercase: true,
+      lowercase: true,
+      numbers: true,
+      symbols: true,
+      excludeSimilar: false,
+      excludeAmbiguous: false,
+      quantity: 1,
+    },
+    history: [],
+  },
 };
 
 export const useToolStore = create((set, get) => ({
