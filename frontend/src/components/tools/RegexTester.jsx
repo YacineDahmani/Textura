@@ -24,6 +24,8 @@ export default function RegexTester() {
   const replacePattern = toolData?.replacePattern || '';
   const flags = toolData?.flags || { g: true, i: true, m: false };
 
+  const backendOnline = useToolStore((state) => state.backendOnline);
+
   const actionChips = [
     <ActionButton
       key="mode-test"
@@ -119,6 +121,12 @@ export default function RegexTester() {
             </button>
           </div>
           <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
+            {!backendOnline && (
+              <div className="bg-error-red/10 border-b border-error-red/20 text-error-red text-[11px] font-medium px-4 py-2 flex items-center gap-2 select-none shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-error-red animate-pulse" />
+                <span>FastAPI Backend Offline: Regex testing operations are currently unavailable.</span>
+              </div>
+            )}
             <TextArea
               value={toolData?.input || ''}
               onChange={(e) => updateToolInput('regex-tester', e.target.value)}

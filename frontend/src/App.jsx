@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useToolStore } from './store/useToolStore';
 import { useHistory } from './hooks/useHistory';
+import { api } from './lib/api';
 
 // Layout & Overlays
 import { TopBar } from './components/layout/TopBar';
@@ -57,6 +58,20 @@ export default function App() {
   const { recordHistory } = useHistory();
 
   // Sync theme with document.documentElement
+  const setBackendOnline = useToolStore((state) => state.setBackendOnline);
+
+  // Poll backend health status periodically
+  useEffect(() => {
+    const checkStatus = async () => {
+      const isOnline = await api.checkHealth();
+      setBackendOnline(isOnline);
+    };
+
+    checkStatus();
+    const interval = setInterval(checkStatus, 8000);
+    return () => clearInterval(interval);
+  }, [setBackendOnline]);
+
   useEffect(() => {
     document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(theme);

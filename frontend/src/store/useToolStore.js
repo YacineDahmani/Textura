@@ -135,6 +135,8 @@ const initialToolsState = {
 
 export const useToolStore = create((set, get) => ({
   activeTool: 'case-converter',
+  backendOnline: true,
+  setBackendOnline: (online) => set({ backendOnline: online }),
   sidebarExpanded: false,
   mobileSidebarOpen: false,
   shortcutsModalOpen: false,

@@ -13,6 +13,9 @@ const toolNames = {
   'url-encoder': 'URL Encoder',
   'hash-generator': 'Hash Generator',
   'minifier': 'Code Minifier',
+  'markdown-tool': 'Markdown Preview',
+  'xml-yaml-formatter': 'XML/YAML Formatter',
+  'password-generator': 'Password Generator',
 };
 
 export function TopBar() {
@@ -22,6 +25,7 @@ export function TopBar() {
   const setShortcutsModalOpen = useToolStore((state) => state.setShortcutsModalOpen);
   const setHistoryDrawerOpen = useToolStore((state) => state.setHistoryDrawerOpen);
   const toggleMobileSidebarOpen = useToolStore((state) => state.toggleMobileSidebarOpen);
+  const backendOnline = useToolStore((state) => state.backendOnline);
 
   return (
     <header className="h-12 w-full fixed top-0 left-0 bg-surface-container border-b border-outline-variant/60 flex items-center justify-between px-3 sm:px-4 z-50 gap-2">
@@ -64,6 +68,18 @@ export function TopBar() {
 
       {/* Right: Quick Action Controls & Version */}
       <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+        {/* Connection status badge */}
+        <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest font-mono select-none transition-all duration-300 border ${
+          backendOnline
+            ? 'bg-success-green/10 border-success-green/20 text-success-green shadow-[0_0_8px_rgba(34,197,94,0.1)]'
+            : 'bg-error-red/10 border-error-red/20 text-error-red shadow-[0_0_8px_rgba(239,68,68,0.15)] animate-pulse'
+        }`}>
+          <span className={`w-1.5 h-1.5 rounded-full ${backendOnline ? 'bg-success-green' : 'bg-error-red animate-ping'}`} />
+          <span>{backendOnline ? 'API Connected' : 'API Offline'}</span>
+        </div>
+
+        <div className="h-4 w-[1px] bg-outline-variant/50 mx-1 hidden sm:block" />
+
         <button
           onClick={() => setHistoryDrawerOpen(true)}
           title="Recent History (Alt+Z / Alt+Y)"

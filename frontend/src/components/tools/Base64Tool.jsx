@@ -17,6 +17,7 @@ export default function Base64Tool() {
   const toggleToolOption = useToolStore((state) => state.toggleToolOption);
   const clearToolInput = useToolStore((state) => state.clearToolInput);
 
+  const backendOnline = useToolStore((state) => state.backendOnline);
   const mode = toolData?.options?.mode || 'encode';
   const urlSafe = !!toolData?.options?.urlSafe;
 
@@ -58,6 +59,12 @@ export default function Base64Tool() {
           </button>
         </div>
         <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
+          {!backendOnline && (
+            <div className="bg-error-red/10 border-b border-error-red/20 text-error-red text-[11px] font-medium px-4 py-2 flex items-center gap-2 select-none shrink-0">
+              <span className="w-1.5 h-1.5 rounded-full bg-error-red animate-pulse" />
+              <span>FastAPI Backend Offline: Base64 operations are currently unavailable.</span>
+            </div>
+          )}
           <TextArea
             value={toolData?.input || ''}
             onChange={(e) => updateToolInput('base64', e.target.value)}
