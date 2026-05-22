@@ -125,7 +125,7 @@ export default function Minifier() {
   return (
     <WorkspaceLayout actionChips={actionChips} showSwap={true}>
       {/* Left Input Pane */}
-      <div className="flex-1 flex flex-col h-full min-h-0 bg-surface">
+      <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 overflow-hidden bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">
             Input ({mode.toUpperCase()})
@@ -148,7 +148,7 @@ export default function Minifier() {
       </div>
 
       {/* Right Output Pane */}
-      <div className="flex-1 flex flex-col h-full min-h-0 bg-surface">
+      <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 overflow-hidden bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">
             Minified Output

@@ -90,7 +90,7 @@ export default function XmlYamlFormatter() {
   return (
     <WorkspaceLayout actionChips={actionChips} showSwap={true}>
       {/* Left Input Pane */}
-      <div className="flex-1 flex flex-col h-full bg-surface">
+      <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 overflow-hidden bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase font-mono">
             {mode === 'xml' ? 'Raw XML Input' : 'Raw YAML Input'}
@@ -118,7 +118,7 @@ export default function XmlYamlFormatter() {
       </div>
 
       {/* Right Output Pane */}
-      <div className="flex-1 flex flex-col h-full bg-surface border-l border-outline-variant/20">
+      <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 overflow-hidden bg-surface border-l border-outline-variant/20">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase font-mono">Formatted Output</span>
           <div className="flex items-center gap-1.5">

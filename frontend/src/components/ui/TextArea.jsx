@@ -1,14 +1,6 @@
 import React, { useRef, useEffect, useMemo, useState } from 'react';
-import { Upload, Loader2, AlertCircle, X, ArrowLeftRight } from 'lucide-react';
+import { Upload, Loader2, AlertCircle, X } from 'lucide-react';
 import { api } from '../../lib/api';
-
-const isRTL = (text) => {
-  if (!text) return false;
-  // Matches Arabic, Hebrew, Persian, Syriac, Thaana, and other RTL ranges
-  const rtlRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\u0590-\u05FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
-  return rtlRegex.test(text);
-};
-
 
 export function TextArea({
   value,
@@ -18,8 +10,6 @@ export function TextArea({
   isOutput = false,
   error = null,
   allowedExtensions = null, // e.g. ['.json'] or ['.js']
-  directionMode: propDirectionMode,
-  onDirectionModeChange,
 }) {
   const textareaRef = useRef(null);
   const gutterRef = useRef(null);
@@ -30,41 +20,6 @@ export function TextArea({
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingMessage, setProcessingMessage] = useState('');
   const [localError, setLocalError] = useState(null);
-
-  // Direction (RTL / LTR) management states
-  const [localDirectionMode, setLocalDirectionMode] = useState('auto'); // 'auto' | 'ltr' | 'rtl'
-
-  const directionMode = propDirectionMode !== undefined ? propDirectionMode : localDirectionMode;
-  const setDirectionMode = onDirectionModeChange !== undefined ? onDirectionModeChange : setLocalDirectionMode;
-
-  const computedDirection = useMemo(() => {
-    if (directionMode === 'auto') {
-      return isRTL(value) ? 'rtl' : 'ltr';
-    }
-    return directionMode;
-  }, [value, directionMode]);
-
-  // Compute padding to prevent overlapping with floating tools
-  const paddingClasses = useMemo(() => {
-    if (computedDirection === 'rtl') {
-      // Gutter is on left (40px). Floating tool is also on left when RTL (~60px to ~160px).
-      // We need pl-32 (128px) or pl-56 (224px) to clear them.
-      // Right padding can be small/normal (pr-4 -> 16px).
-      if (readOnly) {
-        return 'pl-32 pr-4';
-      } else {
-        return 'pl-56 pr-4';
-      }
-    } else {
-      // Floating tool is on right (~60px to ~160px).
-      // Left padding is always pl-12 (48px) to clear the gutter.
-      if (readOnly) {
-        return 'pl-12 pr-24';
-      } else {
-        return 'pl-12 pr-48';
-      }
-    }
-  }, [computedDirection, readOnly]);
 
   // Sync scroll between textarea and line number gutter
   const handleScroll = () => {
@@ -177,7 +132,7 @@ export function TextArea({
           setIsProcessing(false);
         };
         reader.readAsText(file);
-      } catch {
+      } catch (err) {
         setLocalError({ message: "Error reading text file.", isWarning: false });
         setIsProcessing(false);
       }
@@ -214,7 +169,7 @@ export function TextArea({
           setIsProcessing(false);
         };
         reader.readAsText(file);
-      } catch {
+      } catch (err) {
         setLocalError({
           message: "Unsupported file type. Please upload a .txt, .pdf, .docx, or text-based file.",
           isWarning: false
@@ -285,7 +240,7 @@ export function TextArea({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`flex-1 flex h-full min-h-0 min-w-0 relative border border-transparent overflow-hidden ${
+      className={`flex-1 flex min-h-0 min-w-0 relative border border-transparent overflow-hidden ${
         isOutput ? 'bg-surface-container-low/20' : 'bg-surface-container-low/40'
       }`}
     >
@@ -300,45 +255,17 @@ export function TextArea({
         />
       )}
 
-      {/* Floating Toolbar (Direction Toggle + Upload Button) */}
-      {!isProcessing && (
-        <div className={`absolute top-2.5 z-10 select-none flex items-center gap-1.5 ${
-          computedDirection === 'rtl' 
-            ? 'left-14 flex-row-reverse' 
-            : 'right-4'
-        }`}>
-          {/* Floating Direction Toggle Button */}
-          <button
-            onClick={() => {
-              const modes = ['auto', 'ltr', 'rtl'];
-              const nextIndex = (modes.indexOf(directionMode) + 1) % modes.length;
-              setDirectionMode(modes[nextIndex]);
-            }}
-            type="button"
-            title={`Direction: ${directionMode.toUpperCase()} (Click to toggle)`}
-            className={`px-2 py-1.5 rounded border transition-all duration-200 cursor-pointer shadow hover:shadow-md flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider group ${
-              directionMode === 'auto'
-                ? 'bg-surface border-outline-variant/30 text-text-muted hover:bg-surface-container-low'
-                : 'bg-primary/10 border-primary/30 text-primary hover:bg-primary/20'
-            }`}
-          >
-            <ArrowLeftRight size={10} className={computedDirection === 'rtl' ? 'scale-x-[-1] text-primary transition-transform' : 'transition-transform'} />
-            <span>{directionMode}</span>
-          </button>
-
-          {/* Floating Action Upload Button (Prominent styling with Icon + Text) */}
-          {!readOnly && (
-            <button
-              onClick={handleUploadClick}
-              type="button"
-              title={allowedExtensions ? `Upload ${allowedExtensions.join('/')} file` : "Upload text, docx, pdf or code files"}
-              className="px-2.5 py-1.5 rounded bg-primary/10 border border-primary/30 hover:border-primary text-primary hover:bg-primary/20 transition-all duration-200 cursor-pointer shadow hover:shadow-md flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider group"
-            >
-              <Upload size={12} className="group-hover:-translate-y-0.5 transition-transform" />
-              <span>Upload File</span>
-            </button>
-          )}
-        </div>
+      {/* Floating Action Upload Button (Prominent styling with Icon + Text) */}
+      {!readOnly && !isProcessing && (
+        <button
+          onClick={handleUploadClick}
+          type="button"
+          title={allowedExtensions ? `Upload ${allowedExtensions.join('/')} file` : "Upload text, docx, pdf or code files"}
+          className="absolute top-2.5 right-4 px-2.5 py-1.5 rounded bg-primary/10 border border-primary/30 hover:border-primary text-primary hover:bg-primary/20 transition-all duration-200 cursor-pointer shadow hover:shadow-md flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider group z-10"
+        >
+          <Upload size={12} className="group-hover:-translate-y-0.5 transition-transform" />
+          <span>Upload File</span>
+        </button>
       )}
 
       {/* Line Numbers Gutter */}
@@ -358,8 +285,7 @@ export function TextArea({
         placeholder={placeholder}
         readOnly={readOnly}
         spellCheck="false"
-        dir={computedDirection}
-        className={`flex-1 min-h-0 min-w-0 py-4 font-mono text-[13px] leading-6 outline-none h-full overflow-y-auto whitespace-pre overflow-x-auto ${paddingClasses} ${
+        className={`flex-1 min-h-0 min-w-0 py-4 pr-32 pl-12 font-mono text-[13px] leading-6 outline-none h-full overflow-y-auto whitespace-pre overflow-x-auto ${
           isOutput 
             ? 'text-primary/95 placeholder:text-text-faint' 
             : 'text-text-base placeholder:text-text-faint'

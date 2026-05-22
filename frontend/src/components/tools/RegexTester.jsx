@@ -110,7 +110,7 @@ export default function RegexTester() {
       {/* Main Workspace Layout */}
       <WorkspaceLayout actionChips={actionChips} showSwap={false}>
         {/* Left Input Pane */}
-        <div className="flex-1 flex flex-col h-full bg-surface">
+        <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 overflow-hidden bg-surface">
           <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
             <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Test Text</span>
             <button 
@@ -136,7 +136,7 @@ export default function RegexTester() {
         </div>
 
         {/* Right Output Pane */}
-        <div className="flex-1 flex flex-col h-full bg-surface">
+        <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 overflow-hidden bg-surface">
           <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
             <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">
               {mode === 'test' ? 'Matches Breakdown' : 'Replaced Output'}

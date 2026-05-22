@@ -82,7 +82,7 @@ export default function DiffViewer() {
   return (
     <WorkspaceLayout actionChips={actionChips} showSwap={false}>
       {/* Left Pane: Stacked input fields */}
-      <div className="flex-1 flex flex-col h-full bg-surface border-r border-outline-variant/20">
+      <div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden bg-surface border-r border-outline-variant/20">
         {/* Text A Header & Area */}
         <div className="flex-1 flex flex-col min-h-0">
           <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
@@ -94,7 +94,7 @@ export default function DiffViewer() {
               Clear Both
             </button>
           </div>
-          <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
+          <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
             <TextArea
               value={textA}
               onChange={(e) => updateToolInput('diff-viewer', e.target.value)}
@@ -110,7 +110,7 @@ export default function DiffViewer() {
           <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 bg-surface-container-lowest/30 select-none">
             <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Modified Text (B)</span>
           </div>
-          <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
+          <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
             <TextArea
               value={textB}
               onChange={(e) => updateToolInputB('diff-viewer', e.target.value)}
@@ -121,13 +121,13 @@ export default function DiffViewer() {
       </div>
 
       {/* Right Pane: Diff Output Visualizer */}
-      <div className="flex-1 flex flex-col h-full bg-surface">
+      <div className="flex-1 flex flex-col min-h-0 bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Comparison Gutter</span>
           <span className="text-[9px] font-mono text-text-faint">Visual Difference View</span>
         </div>
         
-        <div className="flex-1 p-4 overflow-y-auto font-mono text-[13px] leading-6 bg-surface-container-low/20 select-text whitespace-pre-wrap">
+        <div className="flex-1 min-h-0 p-4 overflow-y-auto font-mono text-[13px] leading-6 bg-surface-container-low/20 select-text whitespace-pre-wrap">
           {diffChanges.length === 0 ? (
             <div className="text-text-faint italic text-center mt-8 select-none">
               Awaiting differences... Paste inputs in Text A and Text B.

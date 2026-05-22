@@ -37,7 +37,7 @@ export default function HashGenerator() {
   return (
     <WorkspaceLayout showSwap={false}>
       {/* Left Input Pane */}
-      <div className="flex-1 flex flex-col h-full bg-surface">
+      <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 overflow-hidden bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Input</span>
           <button 
@@ -63,7 +63,7 @@ export default function HashGenerator() {
       </div>
 
       {/* Right Output Pane: Custom List */}
-      <div className="flex-1 flex flex-col h-full bg-surface">
+      <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 overflow-hidden bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Digests List</span>
           <div className="flex items-center gap-2">
@@ -72,7 +72,7 @@ export default function HashGenerator() {
           </div>
         </div>
         
-        <div className="flex-1 p-4 bg-surface-container-low/20 overflow-y-auto flex flex-col gap-4 select-text">
+        <div className="flex-1 min-h-0 p-4 bg-surface-container-low/20 overflow-y-auto flex flex-col gap-4 select-text">
           {hashList.map((hash) => (
             <div key={hash.label} className="flex flex-col gap-1.5 bg-surface-container-low/40 border border-outline-variant/20 p-3 rounded">
               <div className="flex items-center justify-between">

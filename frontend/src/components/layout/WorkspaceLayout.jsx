@@ -95,7 +95,7 @@ export function WorkspaceLayout({
         {/* Left Input Pane */}
         <div
           style={isMobile ? undefined : { width: `${splitRatio}%` }}
-          className={`h-full flex-col shrink-0 min-h-0 w-full md:w-auto md:flex-1 ${
+          className={`h-full flex-col shrink-0 min-h-0 min-w-0 overflow-hidden w-full md:w-auto md:flex-1 ${
             isMobile 
               ? (activeMobileTab === 'input' ? 'flex' : 'hidden') 
               : 'flex'
@@ -123,7 +123,7 @@ export function WorkspaceLayout({
         {/* Right Output Pane */}
         <div
           style={isMobile ? undefined : { width: `${100 - splitRatio}%` }}
-          className={`h-full flex-col shrink-0 min-h-0 w-full md:w-auto md:flex-1 ${
+          className={`h-full flex-col shrink-0 min-h-0 min-w-0 overflow-hidden w-full md:w-auto md:flex-1 ${
             isMobile 
               ? (activeMobileTab === 'output' ? 'flex' : 'hidden') 
               : 'flex'

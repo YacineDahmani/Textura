@@ -38,7 +38,7 @@ export default function MarkdownTool() {
   return (
     <WorkspaceLayout actionChips={actionChips} showSwap={false}>
       {/* Left Input Pane */}
-      <div className="flex-1 flex flex-col h-full bg-surface">
+      <div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase font-mono">Markdown Input</span>
           <button 
@@ -48,7 +48,7 @@ export default function MarkdownTool() {
             Clear
           </button>
         </div>
-        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
+        <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
           <TextArea
             value={toolData?.input || ''}
             onChange={(e) => updateToolInput('markdown-tool', e.target.value)}
@@ -59,7 +59,7 @@ export default function MarkdownTool() {
       </div>
 
       {/* Right Output Pane */}
-      <div className="flex-1 flex flex-col h-full bg-surface border-l border-outline-variant/20">
+      <div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden bg-surface border-l border-outline-variant/20">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase font-mono">
             {mode === 'preview' ? 'Live HTML Preview' : 'Raw HTML Output'}
@@ -69,13 +69,15 @@ export default function MarkdownTool() {
             <CopyButton text={toolData?.output || ''} />
           </div>
         </div>
-        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
+        <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
           {mode === 'preview' ? (
-            <div className="flex-1 overflow-y-auto p-6 select-text bg-surface-container-lowest text-text-base">
-              <div 
-                className="markdown-preview prose prose-invert max-w-none text-sm leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: toolData?.output || '' }}
-              />
+            <div className="relative flex-1 min-h-0 min-w-0 overflow-hidden bg-surface-container-lowest text-text-base">
+              <div className="absolute inset-0 overflow-y-auto overflow-x-hidden p-6 select-text">
+                <div
+                  className="markdown-preview prose prose-invert max-w-none text-sm leading-relaxed break-words"
+                  dangerouslySetInnerHTML={{ __html: toolData?.output || '' }}
+                />
+              </div>
             </div>
           ) : (
             <TextArea

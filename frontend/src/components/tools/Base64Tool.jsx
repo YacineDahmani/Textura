@@ -48,7 +48,7 @@ export default function Base64Tool() {
   return (
     <WorkspaceLayout actionChips={actionChips} showSwap={true}>
       {/* Left Input Pane */}
-      <div className="flex-1 flex flex-col h-full bg-surface">
+      <div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Input</span>
           <button 
@@ -58,7 +58,7 @@ export default function Base64Tool() {
             Clear
           </button>
         </div>
-        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
+        <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
           {!backendOnline && (
             <div className="bg-error-red/10 border-b border-error-red/20 text-error-red text-[11px] font-medium px-4 py-2 flex items-center gap-2 select-none shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-error-red animate-pulse" />
@@ -74,7 +74,7 @@ export default function Base64Tool() {
       </div>
 
       {/* Right Output Pane */}
-      <div className="flex-1 flex flex-col h-full bg-surface">
+      <div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Output</span>
           <div className="flex items-center gap-1.5">
@@ -82,7 +82,7 @@ export default function Base64Tool() {
             <CopyButton text={toolData?.output || ''} />
           </div>
         </div>
-        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
+        <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
           <TextArea
             value={toolData?.output || ''}
             readOnly={true}

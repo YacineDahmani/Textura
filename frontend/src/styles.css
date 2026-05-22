@@ -142,6 +142,25 @@ textarea {
 /* Premium Markdown Preview Styles */
 .markdown-preview {
   color: var(--color-text-base);
+  max-width: 100%;
+  min-height: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.markdown-preview pre,
+.markdown-preview table,
+.markdown-preview img {
+  max-width: 100%;
+}
+.markdown-preview pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.markdown-preview code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .markdown-preview h1 {
   font-size: 1.85rem;

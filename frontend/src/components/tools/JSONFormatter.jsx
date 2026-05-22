@@ -74,7 +74,7 @@ export default function JSONFormatter() {
   return (
     <WorkspaceLayout actionChips={actionChips} showSwap={true}>
       {/* Left Input Pane */}
-      <div className="flex-1 flex flex-col h-full bg-surface">
+      <div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Input</span>
           <button 
@@ -84,7 +84,7 @@ export default function JSONFormatter() {
             Clear
           </button>
         </div>
-        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
+        <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
           <TextArea
             value={toolData?.input || ''}
             onChange={(e) => updateToolInput('json-formatter', e.target.value)}
@@ -96,7 +96,7 @@ export default function JSONFormatter() {
       </div>
 
       {/* Right Output Pane */}
-      <div className="flex-1 flex flex-col h-full bg-surface">
+      <div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase">Output</span>
           <div className="flex items-center gap-1.5">
@@ -104,7 +104,7 @@ export default function JSONFormatter() {
             <CopyButton text={validationError ? '' : toolData?.output || ''} />
           </div>
         </div>
-        <div className="flex-1 h-full min-h-0 overflow-hidden flex flex-col">
+        <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
           <TextArea
             value={validationError ? '' : toolData?.output || ''}
             readOnly={true}

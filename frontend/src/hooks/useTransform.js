@@ -78,7 +78,7 @@ export function markdownToHtml(md) {
   html = html.replace(/^>\s+(.*)$/gm, "<blockquote>$1</blockquote>");
 
   // 4. Code Blocks
-  html = html.replace(/```([\s\S]*?)```/g, '<pre class="bg-surface-container-highest font-mono p-3 rounded my-2 text-[12px] block overflow-x-auto select-text">$1</pre>');
+  html = html.replace(/```([\s\S]*?)```/g, '<pre class="bg-surface-container-highest font-mono p-3 rounded my-2 text-[12px] block overflow-x-auto max-w-full select-text">$1</pre>');
 
   // 5. Inline Code
   html = html.replace(/`([^`]+)`/g, '<code class="bg-surface-container-highest px-1.5 py-0.5 rounded font-mono text-primary text-[11px]">$1</code>');
