@@ -20,8 +20,6 @@ The experience centers on:
 
 ### Tool Set
 
-Textura is designed around three main families of tools, separated by visual group dividers in the navigation sidebar:
-
 #### Text Tools
 - **Case Converter**: Convert between uppercase, lowercase, title case, sentence case, camelCase, snake_case, kebab-case, and PascalCase.
 - **Text Cleaner**: Trim text, remove blank lines, deduplicate lines, collapse spaces, strip HTML, normalize Unicode, and handle multilingual text more predictably.
@@ -36,7 +34,7 @@ Textura is designed around three main families of tools, separated by visual gro
 - **Regex Tester**: Test patterns, flags, replacements, matches, and results in real time.
 
 #### Encode Tools
-- **Password Generator & Strength Checker**: Generate cryptographically secure passwords (`window.crypto.getRandomValues`) with customizable lengths, character pools (uppercase, lowercase, numbers, symbols), and quantity. Evaluate passwords using an entropy calculation metric ($E = L \times \log_2(R)$), custom checklists, and a glowing, color-coded visual strength meter.
+- **Password Generator & Strength Checker**: Generate cryptographically secure passwords with customizable lengths, character pools (uppercase, lowercase, numbers, symbols), and quantity.
 - **Base64 Tool**: Encode and decode text, including URL-safe support.
 - **URL Encoder**: Encode and decode URI text.
 - **Hash Generator**: Generate multiple cryptographic digests (MD5, SHA-1, SHA-256, SHA-512) simultaneously from a single input.
