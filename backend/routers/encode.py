@@ -1,16 +1,18 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 from typing import Dict, Any
 from services.encode_service import EncodeService
+from limiter import limiter
 
 router = APIRouter(prefix="/encode", tags=["encode"])
 
 class TransformRequest(BaseModel):
-    input: str
+    input: str = Field(..., max_length=500_000)
     options: Dict[str, Any] = Field(default_factory=dict)
 
 @router.post("/base64")
-def base64_endpoint(payload: TransformRequest):
+@limiter.limit("100/minute")
+def base64_endpoint(request: Request, payload: TransformRequest):
     input_str = payload.input
     options = payload.options
     

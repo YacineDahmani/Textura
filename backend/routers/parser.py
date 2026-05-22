@@ -1,5 +1,6 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException, Request
 from services.parser_service import ParserService
+from limiter import limiter
 
 router = APIRouter(prefix="/parser", tags=["parser"])
 
@@ -7,7 +8,8 @@ router = APIRouter(prefix="/parser", tags=["parser"])
 MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024
 
 @router.post("/parse-file")
-async def parse_file_endpoint(file: UploadFile = File(...)):
+@limiter.limit("20/minute")
+async def parse_file_endpoint(request: Request, file: UploadFile = File(...)):
     # Read the file contents
     file_bytes = await file.read()
     
