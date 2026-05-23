@@ -13,9 +13,6 @@ const toolNames = {
   'url-encoder': 'URL Encoder',
   'hash-generator': 'Hash Generator',
   'minifier': 'Code Minifier',
-  'markdown-tool': 'Markdown Preview',
-  'xml-yaml-formatter': 'XML/YAML Formatter',
-  'password-generator': 'Password Generator',
 };
 
 export function TopBar() {
@@ -67,8 +64,6 @@ export function TopBar() {
 
       {/* Right: Quick Action Controls & Version */}
       <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-        <div className="h-4 w-[1px] bg-outline-variant/50 mx-1 hidden sm:block" />
-
         <button
           onClick={() => setHistoryDrawerOpen(true)}
           title="Recent History (Alt+Z / Alt+Y)"
@@ -92,6 +87,10 @@ export function TopBar() {
         </button>
         
         <div className="h-4 w-[1px] bg-outline-variant/50 mx-1 hidden sm:block" />
+        
+        <span className="hidden sm:inline text-[10px] font-mono text-text-faint select-none">
+          v1.0.0
+        </span>
       </div>
     </header>
   );

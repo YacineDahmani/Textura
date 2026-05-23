@@ -119,7 +119,7 @@ export default function PasswordGenerator() {
   return (
     <WorkspaceLayout actionChips={null} showSwap={false}>
       {/* Left Input Pane: Configuration Controls */}
-      <div className="flex-1 flex flex-col h-full bg-surface border-r border-outline-variant/20">
+      <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 overflow-hidden bg-surface border-r border-outline-variant/20">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase font-mono">Password Input & Generator</span>
           <button 
@@ -130,12 +130,13 @@ export default function PasswordGenerator() {
           </button>
         </div>
         
-        <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-6 text-sm">
-          {/* Main generator options */}
-          <div className="bg-surface-container-high/40 p-4 rounded-xl border border-outline-variant/30 flex flex-col gap-4">
-            <h3 className="font-bold flex items-center gap-2 text-primary text-xs uppercase tracking-wider select-none">
-              <Key size={14} /> Generator Settings
-            </h3>
+        <div className="relative flex-1 min-h-0 overflow-hidden bg-surface">
+          <div className="absolute inset-0 overflow-y-auto overflow-x-hidden p-5 flex flex-col gap-6 text-sm">
+            {/* Main generator options */}
+            <div className="bg-surface-container-high/40 p-4 rounded-xl border border-outline-variant/30 flex flex-col gap-4">
+              <h3 className="font-bold flex items-center gap-2 text-primary text-xs uppercase tracking-wider select-none">
+                <Key size={14} /> Generator Settings
+              </h3>
             
             {/* Length slider */}
             <div className="flex flex-col gap-2">
@@ -216,31 +217,34 @@ export default function PasswordGenerator() {
               </div>
             </div>
 
-            <button
-              onClick={handleGenerate}
-              className="mt-2 w-full py-2.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary hover:text-on-primary-container font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer select-none"
-            >
-              <RefreshCw size={13} className="animate-spin-slow" /> Generate Secure Password
-            </button>
-          </div>
+              <button
+                onClick={handleGenerate}
+                className="mt-2 w-full py-2.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary hover:text-on-primary-container font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer select-none"
+              >
+                <RefreshCw size={13} className="animate-spin-slow" /> Generate Secure Password
+              </button>
+            </div>
 
-          {/* Interactive input area */}
-          <div className="flex flex-col gap-2 flex-1 min-h-[140px]">
-            <label className="text-[10px] font-bold tracking-widest text-text-muted uppercase font-mono select-none">
-              Test Custom / Active Passwords
-            </label>
-            <textarea
-              value={passwordInput}
-              onChange={(e) => updateToolInput('password-generator', e.target.value)}
-              placeholder="Or type a custom password to evaluate..."
-              className="flex-1 w-full p-4 rounded-xl border border-outline-variant/30 bg-surface-container-lowest font-mono text-sm leading-relaxed text-text-base focus:border-primary/50 transition-colors select-text resize-none outline-none overflow-y-auto"
-            />
+            {/* Interactive input area */}
+            <div className="flex flex-col gap-2 min-h-[260px]">
+              <label className="text-[10px] font-bold tracking-widest text-text-muted uppercase font-mono select-none">
+                Test Custom / Active Passwords
+              </label>
+              <div className="relative flex-1 min-h-[180px] overflow-hidden rounded-xl border border-outline-variant/30 bg-surface-container-lowest">
+                <textarea
+                  value={passwordInput}
+                  onChange={(e) => updateToolInput('password-generator', e.target.value)}
+                  placeholder="Or type a custom password to evaluate..."
+                  className="absolute inset-0 h-full w-full p-4 font-mono text-sm leading-relaxed text-text-base focus:border-primary/50 transition-colors select-text resize-none outline-none overflow-y-auto overflow-x-auto bg-transparent"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Right Output Pane: Strength Diagnostics */}
-      <div className="flex-1 flex flex-col h-full bg-surface">
+      <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 overflow-hidden bg-surface">
         <div className="h-8 border-b border-outline-variant/30 flex items-center px-4 justify-between bg-surface-container-lowest/30 select-none">
           <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase font-mono">Strength Checker Diagnostics</span>
           <div className="flex items-center gap-1.5">
@@ -249,9 +253,10 @@ export default function PasswordGenerator() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6 text-sm select-none">
-          {/* Main Visual Strength Card */}
-          <div className="bg-surface-container-high/40 p-5 rounded-xl border border-outline-variant/30 flex flex-col gap-4">
+        <div className="relative flex-1 min-h-0 overflow-hidden bg-surface">
+          <div className="absolute inset-0 overflow-y-auto overflow-x-hidden p-6 flex flex-col gap-6 text-sm select-none">
+            {/* Main Visual Strength Card */}
+            <div className="bg-surface-container-high/40 p-5 rounded-xl border border-outline-variant/30 flex flex-col gap-4">
             <div className="flex justify-between items-center select-none">
               <span className="text-xs text-text-muted uppercase font-mono font-bold tracking-wider">Evaluation</span>
               <span className={`text-sm font-extrabold uppercase tracking-wide transition-colors ${strength.text}`}>
@@ -274,45 +279,46 @@ export default function PasswordGenerator() {
                 <span className="text-sm font-bold text-text-base">{poolSize} symbols</span>
               </div>
             </div>
-          </div>
-
-          {/* Diagnostic checklist */}
-          <div className="flex flex-col gap-3">
-            <h4 className="text-[10px] font-bold tracking-widest text-text-muted uppercase font-mono select-none">
-              Entropy Checklist
-            </h4>
-            
-            <div className="flex flex-col gap-2.5">
-              {[
-                { checked: hasLower, label: 'Contains lowercase letters (a-z)' },
-                { checked: hasUpper, label: 'Contains uppercase letters (A-Z)' },
-                { checked: hasNumber, label: 'Contains numbers (0-9)' },
-                { checked: hasSymbol, label: 'Contains special symbols (!@#...)' },
-                { checked: isLongEnough, label: `Length is >= 12 characters (${passwordInput.length} chars)` },
-                { checked: !hasRepetitive, label: "No continuous repeating patterns (e.g. 'aaa', '123')" }
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-center gap-3 text-xs select-none">
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center border shrink-0 transition-all ${
-                    item.checked
-                      ? 'bg-success-green/10 border-success-green/40 text-success-green shadow-[0_0_6px_rgba(34,197,94,0.1)]'
-                      : 'border-outline-variant/30 text-text-faint bg-surface-container/20'
-                  }`}>
-                    {item.checked ? <Check size={11} strokeWidth={3} /> : <span className="w-1.5 h-1.5 rounded-full bg-outline-variant" />}
-                  </div>
-                  <span className={item.checked ? 'text-text-base' : 'text-text-muted'}>
-                    {item.label}
-                  </span>
-                </div>
-              ))}
             </div>
-          </div>
 
-          {/* Educational tooltip */}
-          <div className="mt-2 bg-primary/5 rounded-lg border border-primary/10 p-3.5 flex gap-3 text-xs select-none text-text-muted leading-relaxed">
-            <Info size={16} className="text-primary shrink-0 mt-0.5" />
-            <div className="flex flex-col gap-1">
-              <span className="font-bold text-text-base text-primary">Why Entropy Matters?</span>
-              Entropy measures a password's unpredictability. Higher entropy makes brute-forcing mathematically infeasible. We target at least <strong className="text-primary">60+ bits</strong> for robust security.
+            {/* Diagnostic checklist */}
+            <div className="flex flex-col gap-3">
+              <h4 className="text-[10px] font-bold tracking-widest text-text-muted uppercase font-mono select-none">
+                Entropy Checklist
+              </h4>
+              
+              <div className="flex flex-col gap-2.5">
+                {[
+                  { checked: hasLower, label: 'Contains lowercase letters (a-z)' },
+                  { checked: hasUpper, label: 'Contains uppercase letters (A-Z)' },
+                  { checked: hasNumber, label: 'Contains numbers (0-9)' },
+                  { checked: hasSymbol, label: 'Contains special symbols (!@#...)' },
+                  { checked: isLongEnough, label: `Length is >= 12 characters (${passwordInput.length} chars)` },
+                  { checked: !hasRepetitive, label: "No continuous repeating patterns (e.g. 'aaa', '123')" }
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-3 text-xs select-none">
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center border shrink-0 transition-all ${
+                      item.checked
+                        ? 'bg-success-green/10 border-success-green/40 text-success-green shadow-[0_0_6px_rgba(34,197,94,0.1)]'
+                        : 'border-outline-variant/30 text-text-faint bg-surface-container/20'
+                    }`}>
+                      {item.checked ? <Check size={11} strokeWidth={3} /> : <span className="w-1.5 h-1.5 rounded-full bg-outline-variant" />}
+                    </div>
+                    <span className={item.checked ? 'text-text-base' : 'text-text-muted'}>
+                      {item.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Educational tooltip */}
+            <div className="mt-2 bg-primary/5 rounded-lg border border-primary/10 p-3.5 flex gap-3 text-xs select-none text-text-muted leading-relaxed">
+              <Info size={16} className="text-primary shrink-0 mt-0.5" />
+              <div className="flex flex-col gap-1">
+                <span className="font-bold text-text-base text-primary">Why Entropy Matters?</span>
+                Entropy measures a password's unpredictability. Higher entropy makes brute-forcing mathematically infeasible. We target at least <strong className="text-primary">60+ bits</strong> for robust security.
+              </div>
             </div>
           </div>
         </div>
