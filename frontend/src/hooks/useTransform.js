@@ -557,8 +557,45 @@ Average Word Length      : ${wordCountVal > 0 ? (noSpaceCharCount / wordCountVal
           }
 
           case 'password-generator': {
-            const analysis = analyzePasswordStrength(input);
-            result = `--- Password Strength Diagnostics ---
+            const lines = input
+              .split('\n')
+              .map((p) => p.trim())
+              .filter((p) => p.length > 0);
+
+            if (lines.length > 1) {
+              const analyses = lines.map(pwd => ({
+                pwd,
+                ...analyzePasswordStrength(pwd)
+              }));
+              
+              const total = analyses.length;
+              const extremelySecure = analyses.filter(a => a.label === 'Extremely Secure').length;
+              const strong = analyses.filter(a => a.label === 'Strong').length;
+              const weakMedium = analyses.filter(a => a.label === 'Weak / Medium').length;
+              const veryWeak = analyses.filter(a => a.label === 'Very Weak').length;
+              const averageEntropy = analyses.reduce((sum, a) => sum + a.entropy, 0) / total;
+              
+              let bulkReport = `--- Bulk Password Strength Diagnostics ---
+Total Passwords Scanned: ${total}
+Average Entropy        : ${averageEntropy.toFixed(1)} bits
+
+Strength Breakdown:
+- Extremely Secure : ${extremelySecure} (${((extremelySecure/total)*100).toFixed(1)}%)
+- Strong           : ${strong} (${((strong/total)*100).toFixed(1)}%)
+- Weak / Medium    : ${weakMedium} (${((weakMedium/total)*100).toFixed(1)}%)
+- Very Weak        : ${veryWeak} (${((veryWeak/total)*100).toFixed(1)}%)
+
+Individual Passwords Scan Details:
+`;
+
+              analyses.forEach((a, idx) => {
+                bulkReport += `\n${idx + 1}. [${a.label}] "${a.pwd}" (${a.entropy.toFixed(1)} bits) - Pool: ${a.poolSize} chars: l=${a.hasLower ? 'y' : 'n'} u=${a.hasUpper ? 'y' : 'n'} n=${a.hasNumber ? 'y' : 'n'} s=${a.hasSymbol ? 'y' : 'n'} repeat=${a.hasRepetitive ? 'y' : 'n'}`;
+              });
+              
+              result = bulkReport;
+            } else {
+              const analysis = analyzePasswordStrength(input);
+              result = `--- Password Strength Diagnostics ---
 Score: ${analysis.score}/4 (${analysis.label})
 Entropy: ${analysis.entropy.toFixed(1)} bits
 Character Pool Size: ${analysis.poolSize}
@@ -570,6 +607,7 @@ Requirements Checklist:
 [${analysis.hasSymbol ? 'x' : ' '}] Contains special symbols
 [${analysis.isLongEnough ? 'x' : ' '}] Length is >= 12 characters (${input.length} chars)
 [${!analysis.hasRepetitive ? 'x' : ' '}] No continuous repeating patterns (e.g. 'aaa', '123')`;
+            }
             break;
           }
 
