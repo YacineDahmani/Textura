@@ -1,18 +1,16 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useToolStore } from '../../store/useToolStore';
-import { ArrowLeftRight } from 'lucide-react';
 
 export function WorkspaceLayout({
   children,
   actionChips = null,
-  showSwap = true,
   customLayout = false, // If true, the parent tool renders its own layout
 }) {
   const activeTool = useToolStore((state) => state.activeTool);
   const toolData = useToolStore((state) => state.tools[activeTool]);
-  const swapToolInputOutput = useToolStore((state) => state.swapToolInputOutput);
   
   const [splitRatio, setSplitRatio] = useState(50); // percentage for left pane
+  const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
   const isDraggingRef = useRef(false);
 
@@ -56,14 +54,14 @@ export function WorkspaceLayout({
     const relativeX = e.clientX - containerRect.left;
     const percentage = (relativeX / containerRect.width) * 100;
     
-    // Bounds limit (between 20% and 80%)
-    if (percentage >= 20 && percentage <= 80) {
-      setSplitRatio(percentage);
-    }
+    // Bounds limit clamped (between 20% and 80%)
+    const clampedPercentage = Math.max(20, Math.min(80, percentage));
+    setSplitRatio(clampedPercentage);
   }, []);
 
   const handleMouseUp = useCallback(() => {
     isDraggingRef.current = false;
+    setIsDragging(false);
     document.removeEventListener('mousemove', handleMouseMove);
     document.removeEventListener('mouseup', handleMouseUp);
   }, [handleMouseMove]);
@@ -71,6 +69,7 @@ export function WorkspaceLayout({
   const handleMouseDown = (e) => {
     e.preventDefault();
     isDraggingRef.current = true;
+    setIsDragging(true);
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   };
@@ -96,6 +95,8 @@ export function WorkspaceLayout({
         <div
           style={isMobile ? undefined : { width: `${splitRatio}%` }}
           className={`h-full flex-col shrink-0 min-h-0 min-w-0 overflow-hidden w-full md:w-auto md:flex-1 ${
+            isDragging ? 'pointer-events-none select-none' : ''
+          } ${
             isMobile 
               ? (activeMobileTab === 'input' ? 'flex' : 'hidden') 
               : 'flex'
@@ -107,23 +108,17 @@ export function WorkspaceLayout({
         {/* Gutter Resize Handle */}
         <div
           onMouseDown={handleMouseDown}
-          className="hidden md:flex w-[4px] h-full cursor-col-resize bg-outline-variant/20 hover:bg-primary/60 transition-colors shrink-0 z-10 items-center justify-center group"
-        >
-          {showSwap && (
-            <button
-              onClick={() => swapToolInputOutput(activeTool)}
-              title="Swap Input/Output (Ctrl+Shift+S)"
-              className="absolute -translate-x-0 w-6 h-6 rounded-full bg-surface-container-highest border border-outline-variant hover:border-primary text-text-muted hover:text-primary flex items-center justify-center transition-transform duration-300 hover:rotate-180 cursor-pointer shadow-md select-none"
-            >
-              <ArrowLeftRight size={12} />
-            </button>
-          )}
-        </div>
+          className={`hidden md:flex w-[4px] h-full cursor-col-resize bg-outline-variant/20 hover:bg-primary/60 transition-colors shrink-0 z-10 items-center justify-center group ${
+            isDragging ? 'bg-primary/60' : ''
+          }`}
+        />
 
         {/* Right Output Pane */}
         <div
           style={isMobile ? undefined : { width: `${100 - splitRatio}%` }}
           className={`h-full flex-col shrink-0 min-h-0 min-w-0 overflow-hidden w-full md:w-auto md:flex-1 ${
+            isDragging ? 'pointer-events-none select-none' : ''
+          } ${
             isMobile 
               ? (activeMobileTab === 'output' ? 'flex' : 'hidden') 
               : 'flex'
@@ -131,6 +126,11 @@ export function WorkspaceLayout({
         >
           {rightPane}
         </div>
+
+        {/* Full-screen dragging overlay catcher */}
+        {isDragging && (
+          <div className="fixed inset-0 z-[9999] cursor-col-resize select-none pointer-events-auto bg-transparent" />
+        )}
       </div>
     );
   };

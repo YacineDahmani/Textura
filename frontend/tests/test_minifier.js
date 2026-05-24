@@ -1,4 +1,4 @@
-import { minifyHTML } from './src/lib/minifier.js';
+import { minifyHTML } from '../src/lib/minifier.js';
 
 const html = `<!DOCTYPE html>
 <html lang="en">
@@ -39,11 +39,11 @@ const html = `<!DOCTYPE html>
 </body>
 </html>`;
 
-console.log("Minifying HTML...");
+console.log('Minifying HTML...');
 const minified = minifyHTML(html, {
   stripComments: true,
   collapseWhitespace: true,
-  minifyEmbedded: true
+  minifyEmbedded: true,
 });
-console.log("Done!");
+console.log('Done!');
 console.log(minified);

@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useToolStore } from '../../store/useToolStore';
 import { useTransform } from '../../hooks/useTransform';
 import { WorkspaceLayout } from '../layout/WorkspaceLayout';
-import { ActionButton } from '../ui/ActionButton';
 import { CopyButton } from '../ui/CopyButton';
 import { ExportButton } from '../ui/ExportButton';
-import { Shield, RefreshCw, Key, Check, Info, Upload, Eye, EyeOff, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { RefreshCw, Key, Check, Info, Upload, Eye, EyeOff, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function PasswordGenerator() {
   // Execute transformation hook
@@ -153,7 +152,7 @@ export default function PasswordGenerator() {
   };
 
   // Helper to generate a new password based on options
-  const handleGenerate = () => {
+  const handleGenerate = useCallback(() => {
     const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
     const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const numberChars = '0123456789';
@@ -185,14 +184,28 @@ export default function PasswordGenerator() {
     }
 
     updateToolInput('password-generator', finalPasswords.join('\n'));
-  };
+  }, [
+    options.lowercase,
+    options.uppercase,
+    options.numbers,
+    options.symbols,
+    options.quantity,
+    options.length,
+    updateToolInput,
+  ]);
 
-  // Generate an initial password if empty
+  // Generate a password on initial mount if empty, or automatically regenerate when options change
+  const isFirstMount = useRef(true);
   useEffect(() => {
-    if (!toolData?.input) {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      if (!toolData?.input) {
+        handleGenerate();
+      }
+    } else {
       handleGenerate();
     }
-  }, []);
+  }, [handleGenerate]);
 
   // Parse Diagnostics out of Output to show visually
   const passwordInput = toolData?.input || '';
