@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "test": "node tests/test_minifier.js"
+    "test": "node ../tests/frontend/test_minifier.js"
   },
   "dependencies": {
     "clsx": "^2.1.1",

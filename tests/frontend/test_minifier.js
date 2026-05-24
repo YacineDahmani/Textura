@@ -1,4 +1,4 @@
-import { minifyHTML } from '../src/lib/minifier.js';
+import { minifyHTML } from '../../frontend/src/lib/minifier.js';
 
 const html = `<!DOCTYPE html>
 <html lang="en">
